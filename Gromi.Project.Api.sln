@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Presentation", "5-Presentation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Application", "1-Application", "{06AE0568-2B9E-4129-B2A0-C9552578D07E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Repository", "2-Repository", "{F76A4E28-EE9E-4580-AF2D-23C107291E0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Infrastructure.Core", "3-Infrastructure.Core", "{9A54E5E9-AF48-4FE2-9042-C29840E42989}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Infrastructure.Common", "4-Infrastructure.Common", "{E8F2F5E0-FB62-4342-B846-D8A6426D3325}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6-Docs", "6-Docs", "{CE5D5A7E-CEE8-4439-92AA-102851B2DECE}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\README.md = Docs\README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Repository", "Repository\Gromi.Template.Repository\Gromi.Repository.csproj", "{5297734E-F6CE-4DDD-8AB4-6F3ED7E97C7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Infra.Utils", "Infrastructure\Gromi.Infra.Utils\Gromi.Infra.Utils.csproj", "{E50301A9-4C29-4F4D-A680-BD811B318E62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Application", "Application\Gromi.Application\Gromi.Application.csproj", "{4A7F5C82-C8C0-4CFF-9637-A41024D44DE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Infra.Entity", "Infrastructure\Gromi.Infra.Entity\Gromi.Infra.Entity.csproj", "{78D89CD7-DF1F-4E5F-9A29-8CC35EB89A8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Template.Api", "Presentation\Gromi.Template.Api\Gromi.Template.Api.csproj", "{678A5B53-2DFD-4447-B32E-3B142ABEC965}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5297734E-F6CE-4DDD-8AB4-6F3ED7E97C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5297734E-F6CE-4DDD-8AB4-6F3ED7E97C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5297734E-F6CE-4DDD-8AB4-6F3ED7E97C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5297734E-F6CE-4DDD-8AB4-6F3ED7E97C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E50301A9-4C29-4F4D-A680-BD811B318E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E50301A9-4C29-4F4D-A680-BD811B318E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E50301A9-4C29-4F4D-A680-BD811B318E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E50301A9-4C29-4F4D-A680-BD811B318E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A7F5C82-C8C0-4CFF-9637-A41024D44DE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A7F5C82-C8C0-4CFF-9637-A41024D44DE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A7F5C82-C8C0-4CFF-9637-A41024D44DE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A7F5C82-C8C0-4CFF-9637-A41024D44DE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78D89CD7-DF1F-4E5F-9A29-8CC35EB89A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78D89CD7-DF1F-4E5F-9A29-8CC35EB89A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78D89CD7-DF1F-4E5F-9A29-8CC35EB89A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78D89CD7-DF1F-4E5F-9A29-8CC35EB89A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{678A5B53-2DFD-4447-B32E-3B142ABEC965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{678A5B53-2DFD-4447-B32E-3B142ABEC965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{678A5B53-2DFD-4447-B32E-3B142ABEC965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{678A5B53-2DFD-4447-B32E-3B142ABEC965}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5297734E-F6CE-4DDD-8AB4-6F3ED7E97C7F} = {F76A4E28-EE9E-4580-AF2D-23C107291E0C}
+		{E50301A9-4C29-4F4D-A680-BD811B318E62} = {E8F2F5E0-FB62-4342-B846-D8A6426D3325}
+		{4A7F5C82-C8C0-4CFF-9637-A41024D44DE8} = {06AE0568-2B9E-4129-B2A0-C9552578D07E}
+		{78D89CD7-DF1F-4E5F-9A29-8CC35EB89A8A} = {9A54E5E9-AF48-4FE2-9042-C29840E42989}
+		{678A5B53-2DFD-4447-B32E-3B142ABEC965} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {22CAF464-7B90-46F5-A810-6EFAE8B3B1D1}
+	EndGlobalSection
+EndGlobal
