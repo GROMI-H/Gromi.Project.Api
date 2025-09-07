@@ -1,4 +1,5 @@
 ﻿using Gromi.Infra.Entity.CommonModule.Attributes;
+using Gromi.Infra.Repository;
 using System.Reflection;
 
 namespace Gromi.Template.Api.Configurations
@@ -27,6 +28,8 @@ namespace Gromi.Template.Api.Configurations
                     .Where(t => t.IsClass && !t.IsAbstract && t.GetCustomAttributes(typeof(AutoInjectAttribute), false).Length > 0)
                     .Where(t => injectKeys.Contains(t.GetCustomAttribute<AutoInjectAttribute>()?.Key))
                     .ToList();
+                // 无法自动实例化泛型类 T
+                services.AddSingleton(typeof(IRepository<>), typeof(BaseRepository<>));
                 types.ForEach(impl =>
                 {
                     // 获取该类所有接口

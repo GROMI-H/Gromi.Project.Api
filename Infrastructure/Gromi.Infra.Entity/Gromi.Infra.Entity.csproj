@@ -7,13 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CommonModule\Dtos\" />
     <Folder Include="CommonModule\Params\" />
-    <Folder Include="CommonModule\Enums\" />
-    <Folder Include="TemplateModule\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FreeSql" Version="3.5.213" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
   </ItemGroup>
 

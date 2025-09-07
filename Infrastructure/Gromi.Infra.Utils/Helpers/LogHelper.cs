@@ -87,7 +87,7 @@
                 {
                     using (var fs = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
                     {
-                        Byte[] dataArray = System.Text.Encoding.UTF8.GetBytes($"【{DateTime.Now:yyyy-MM-dd HH:mm:ss}】 {msg}\r");
+                        byte[] dataArray = System.Text.Encoding.UTF8.GetBytes($"【{DateTime.Now:yyyy-MM-dd HH:mm:ss}】 {msg}\r");
                         fs.Seek(0, SeekOrigin.End);
                         fs.Write(dataArray, 0, dataArray.Length);
                     }

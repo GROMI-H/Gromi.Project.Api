@@ -1,5 +1,7 @@
 ﻿using Gromi.Infra.Utils.Helpers;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace Gromi.Template.Api.Configurations
 {
@@ -26,7 +28,13 @@ namespace Gromi.Template.Api.Configurations
                         Version = "v1",
                         Description = "API for Gromi Template application",
                     });
+
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true); // 控制器注释
                 });
+
+                
             }
         }
 

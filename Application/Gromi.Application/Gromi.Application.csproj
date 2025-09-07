@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Entity\Gromi.Infra.Entity.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Utils\Gromi.Infra.Utils.csproj" />
+    <ProjectReference Include="..\..\Repository\Gromi.Template.Repository\Gromi.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

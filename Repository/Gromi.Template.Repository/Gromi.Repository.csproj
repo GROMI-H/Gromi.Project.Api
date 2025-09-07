@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Repository\Gromi.Infra.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

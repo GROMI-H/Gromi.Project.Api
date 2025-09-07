@@ -33,6 +33,10 @@ namespace Gromi.Template.Api
             builder.Services.AddAutoInjectConfiguration();
             // 配置Swagger
             builder.Services.AddSwaggerConfiguration(enableSwagger);
+            // 配置FreeSql
+            builder.Services.AddFreeSqlConfiguration(builder.Configuration);
+            // 配置 其他工具
+            builder.Services.AddOtherConfiguration();
 
             #endregion Add services to the container
 
