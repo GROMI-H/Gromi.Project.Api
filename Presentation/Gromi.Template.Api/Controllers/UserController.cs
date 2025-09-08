@@ -9,6 +9,7 @@ namespace Gromi.Template.Api.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Filter.LoggingActionFilter]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

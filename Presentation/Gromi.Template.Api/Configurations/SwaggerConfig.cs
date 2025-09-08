@@ -1,6 +1,4 @@
-﻿using Gromi.Infra.Utils.Helpers;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace Gromi.Template.Api.Configurations
@@ -33,8 +31,6 @@ namespace Gromi.Template.Api.Configurations
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true); // 控制器注释
                 });
-
-                
             }
         }
 

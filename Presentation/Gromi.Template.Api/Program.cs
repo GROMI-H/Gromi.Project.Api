@@ -3,8 +3,15 @@ using Gromi.Template.Api.Configurations;
 
 namespace Gromi.Template.Api
 {
+    /// <summary>
+    /// 主程序
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// 程序入口
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
