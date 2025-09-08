@@ -1,4 +1,5 @@
-﻿using Gromi.Infra.Entity.CommonModule.Enums;
+﻿using Gromi.Infra.Entity.CommonModule.Dtos;
+using Gromi.Infra.Entity.CommonModule.Enums;
 
 namespace Gromi.Infra.Repository
 {
@@ -6,7 +7,7 @@ namespace Gromi.Infra.Repository
     /// 通用仓储（支持多数据库和异步操作）
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         protected readonly IFreeSql _fsql;
 
@@ -34,6 +35,12 @@ namespace Gromi.Infra.Repository
 
         public virtual async Task<bool> UpdateAsync(TEntity entity)
         {
+            var existingEntity = await _fsql.GetRepository<TEntity>().Select.WhereDynamic(entity.Id).FirstAsync();
+            if (existingEntity == null)
+            {
+                return false;
+            }
+            entity.CreateTime = existingEntity.CreateTime;
             var effectRows = await _fsql.GetRepository<TEntity>().UpdateAsync(entity);
             return effectRows > 0;
         }

@@ -55,9 +55,9 @@ namespace Gromi.Template.Api.Configurations
                         // 2.时间字段处理
                         if (e.Column.CsType == typeof(DateTime))
                         {
-                            if (e.Property.Name == "CreateTime" && e.AuditValueType == FreeSql.Aop.AuditValueType.Insert)
+                            if (e.Property.Name == "CreateTime")
                             {
-                                if (e.Value == null || (DateTime)e.Value == default)
+                                if (e.AuditValueType == FreeSql.Aop.AuditValueType.Insert)
                                 {
                                     e.Value = DateTime.Now;
                                 }

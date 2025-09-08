@@ -1,19 +1,20 @@
 ﻿using FreeSql.DataAnnotations;
 using Gromi.Infra.Entity.CommonModule.Attributes;
+using Gromi.Infra.Entity.CommonModule.Dtos;
 
 namespace Gromi.Infra.Entity.TemplateModule.Dtos
 {
     /// <summary>
     /// 用户信息，Demo
     /// </summary>
-    public class UserInfo
+    public class UserInfo : BaseEntity
     {
         /// <summary>
         /// 主键ID
         /// </summary>
         [Column(IsPrimary = true)]
         [Snowflake]
-        public long Id { get; set; }
+        public override long Id { get; set; }
 
         /// <summary>
         /// 用户名
@@ -25,15 +26,5 @@ namespace Gromi.Infra.Entity.TemplateModule.Dtos
         /// 年龄
         /// </summary>
         public int Age { get; set; }
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime CreateTime { get; set; }
-
-        /// <summary>
-        /// 更新时间
-        /// </summary>
-        public DateTime UpdateTime { get; set; }
     }
 }
