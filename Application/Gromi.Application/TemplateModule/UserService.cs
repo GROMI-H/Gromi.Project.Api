@@ -2,7 +2,6 @@
 using Gromi.Infra.Entity.CommonModule.Dtos;
 using Gromi.Infra.Entity.CommonModule.Enums;
 using Gromi.Infra.Entity.TemplateModule.Dtos;
-using Gromi.Infra.Repository;
 using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.TemplateModule;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,12 +55,10 @@ namespace Gromi.Application.TemplateModule
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IRepository<UserInfo> _userBaseRespory;
 
-        public UserService(IUserRepository userRepository, IRepository<UserInfo> repository)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _userBaseRespory = repository;
         }
 
         public async Task<BaseResult<UserInfo>> CreateUserInfo(UserInfo model)
@@ -70,7 +67,7 @@ namespace Gromi.Application.TemplateModule
             {
                 BaseResult<UserInfo> result = new BaseResult<UserInfo>();
 
-                var createRes = await _userBaseRespory.InsertAsync(model);
+                var createRes = await _userRepository.InsertAsync(model);
                 result.Code = createRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Msg = createRes != null ? "用户创建成功" : "用户创建失败";
                 result.Data = createRes;
@@ -88,7 +85,7 @@ namespace Gromi.Application.TemplateModule
             try
             {
                 BaseResult<IEnumerable<UserInfo>> result = new BaseResult<IEnumerable<UserInfo>>();
-                var queryRes = await _userBaseRespory.GetAllAsync();
+                var queryRes = await _userRepository.GetAllAsync();
                 bool isQuery = queryRes != null && queryRes.Count > 0;
                 result.Code = isQuery ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Msg = isQuery ? "查询成功" : "查询失败";
@@ -107,7 +104,7 @@ namespace Gromi.Application.TemplateModule
             try
             {
                 BaseResult<UserInfo> result = new BaseResult<UserInfo>();
-                var queryRes = await _userBaseRespory.GetModelAsync(id);
+                var queryRes = await _userRepository.GetModelAsync(id);
                 bool isQuery = queryRes != null;
                 result.Code = isQuery ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Msg = isQuery ? "查询成功" : "查询失败";
@@ -126,7 +123,7 @@ namespace Gromi.Application.TemplateModule
             try
             {
                 BaseResult result = new BaseResult();
-                var queryRes = await _userBaseRespory.UpdateAsync(model);
+                var queryRes = await _userRepository.UpdateAsync(model);
                 result.Code = queryRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Msg = queryRes ? "更新成功" : "更新失败";
                 return result;
@@ -143,7 +140,7 @@ namespace Gromi.Application.TemplateModule
             try
             {
                 BaseResult result = new BaseResult();
-                var queryRes = await _userBaseRespory.DeleteAsync(id);
+                var queryRes = await _userRepository.DeleteAsync(id);
                 result.Code = queryRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Msg = queryRes ? "删除成功" : "删除失败";
                 return result;

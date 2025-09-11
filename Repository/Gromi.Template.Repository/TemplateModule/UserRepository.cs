@@ -9,7 +9,7 @@ namespace Gromi.Repository.TemplateModule
     /// <summary>
     /// 用户仓储接口
     /// </summary>
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<UserInfo>
     {
     }
 
