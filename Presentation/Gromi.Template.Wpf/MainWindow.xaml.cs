@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Gromi.Template.Wpf.Views;
+using System.Windows;
 
 namespace Gromi.Template.Wpf
 {
@@ -9,6 +10,8 @@ namespace Gromi.Template.Wpf
     {
         public MainWindow()
         {
+            InitializeComponent();
+            MainFrame.Navigate(new TestView()); // 导航到 TestView
         }
     }
 }
