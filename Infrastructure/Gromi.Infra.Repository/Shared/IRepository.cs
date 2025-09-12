@@ -1,4 +1,4 @@
-﻿namespace Gromi.Infra.Repository
+﻿namespace Gromi.Infra.Repository.Shared
 {
     /// <summary>
     /// 异步仓储接口

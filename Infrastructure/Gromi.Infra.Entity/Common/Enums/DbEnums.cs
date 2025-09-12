@@ -1,4 +1,4 @@
-﻿namespace Gromi.Infra.Entity.CommonModule.Enums
+﻿namespace Gromi.Infra.Entity.Common.Enums
 {
     /// <summary>
     /// 数据库枚举

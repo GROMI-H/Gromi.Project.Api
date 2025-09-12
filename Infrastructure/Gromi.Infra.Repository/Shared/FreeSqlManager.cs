@@ -1,4 +1,4 @@
-﻿namespace Gromi.Infra.Repository
+﻿namespace Gromi.Infra.Repository.Shared
 {
     /// <summary>
     /// MultiFreeSql管理器接口

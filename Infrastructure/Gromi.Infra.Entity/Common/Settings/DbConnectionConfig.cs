@@ -1,4 +1,4 @@
-﻿namespace Gromi.Infra.Entity.CommonModule.Settings
+﻿namespace Gromi.Infra.Entity.Common.Settings
 {
     /// <summary>
     /// FreeSql配置类

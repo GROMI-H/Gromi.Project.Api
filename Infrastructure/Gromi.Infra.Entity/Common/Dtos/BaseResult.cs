@@ -1,6 +1,6 @@
-﻿using Gromi.Infra.Entity.CommonModule.Enums;
+﻿using Gromi.Infra.Entity.Common.Enums;
 
-namespace Gromi.Infra.Entity.CommonModule.Dtos
+namespace Gromi.Infra.Entity.Common.Dtos
 {
     /// <summary>
     /// 通用响应结构

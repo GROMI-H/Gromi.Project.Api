@@ -1,12 +1,12 @@
-﻿using Gromi.Infra.Entity.CommonModule.Attributes;
-using Gromi.Infra.Entity.CommonModule.Dtos;
-using Gromi.Infra.Entity.CommonModule.Enums;
-using Gromi.Infra.Entity.TemplateModule.Dtos;
+﻿using Gromi.Infra.Entity.Common.Attributes;
+using Gromi.Infra.Entity.Common.Dtos;
+using Gromi.Infra.Entity.Common.Enums;
+using Gromi.Infra.Repository.DbEntity.Template;
 using Gromi.Infra.Utils.Helpers;
-using Gromi.Repository.TemplateModule;
+using Gromi.Repository.Template;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Gromi.Application.TemplateModule
+namespace Gromi.Application.Template
 {
     /// <summary>
     /// 用户服务接口

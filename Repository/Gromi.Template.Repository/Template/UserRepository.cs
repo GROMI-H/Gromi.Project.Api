@@ -1,10 +1,10 @@
-﻿using Gromi.Infra.Entity.CommonModule.Attributes;
-using Gromi.Infra.Entity.CommonModule.Enums;
-using Gromi.Infra.Entity.TemplateModule.Dtos;
-using Gromi.Infra.Repository;
+﻿using Gromi.Infra.Entity.Common.Attributes;
+using Gromi.Infra.Entity.Common.Enums;
+using Gromi.Infra.Repository.DbEntity.Template;
+using Gromi.Infra.Repository.Shared;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Gromi.Repository.TemplateModule
+namespace Gromi.Repository.Template
 {
     /// <summary>
     /// 用户仓储接口

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Gromi.Infra.Entity.CommonModule.Attributes
+namespace Gromi.Infra.Entity.Common.Attributes
 {
     /// <summary>
     /// 自动注入特性

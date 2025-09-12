@@ -7,7 +7,7 @@ using Gromi.Infra.Utils.Helpers;
 using System.Reflection;
 using Yitter.IdGenerator;
 
-namespace Gromi.Template.Api.Configurations
+namespace Gromi.CraftHub.Api.Configurations
 {
     /// <summary>
     /// FreeSql配置

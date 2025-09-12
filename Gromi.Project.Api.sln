@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Infra.Repository", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Template.Wpf", "Presentation\Gromi.Template.Wpf\Gromi.Template.Wpf.csproj", "{1011C512-9DA6-41FB-99F1-DDD6AEBE61B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.CraftHub.Api", "Presentation\Gromi.CraftHub.Api\Gromi.CraftHub.Api.csproj", "{E4DC8E9E-FFCD-4719-9835-4488EA6375C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{1011C512-9DA6-41FB-99F1-DDD6AEBE61B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1011C512-9DA6-41FB-99F1-DDD6AEBE61B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1011C512-9DA6-41FB-99F1-DDD6AEBE61B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4DC8E9E-FFCD-4719-9835-4488EA6375C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4DC8E9E-FFCD-4719-9835-4488EA6375C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4DC8E9E-FFCD-4719-9835-4488EA6375C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4DC8E9E-FFCD-4719-9835-4488EA6375C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{E26991F7-FCF9-4788-9B20-7DF6D755536E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{E6E01951-5A25-4175-BAB0-8C81CD3E565A} = {9A54E5E9-AF48-4FE2-9042-C29840E42989}
 		{1011C512-9DA6-41FB-99F1-DDD6AEBE61B6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{E4DC8E9E-FFCD-4719-9835-4488EA6375C3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22CAF464-7B90-46F5-A810-6EFAE8B3B1D1}

@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CommonModule\Params\" />
+    <Folder Include="Common\Params\" />
+    <Folder Include="CraftHub\SystemModule\Dtos\" />
+    <Folder Include="Template\Dtos\" />
   </ItemGroup>
 
   <ItemGroup>

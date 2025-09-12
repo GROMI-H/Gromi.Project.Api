@@ -1,4 +1,4 @@
-﻿namespace Gromi.Infra.Entity.CommonModule.Dtos
+﻿namespace Gromi.Infra.Entity.Common.Dtos
 {
     /// <summary>
     /// 基础实体

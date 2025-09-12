@@ -1,7 +1,7 @@
-﻿using Gromi.Infra.Entity.CommonModule.Dtos;
-using Gromi.Infra.Entity.CommonModule.Enums;
+﻿using Gromi.Infra.Entity.Common.Dtos;
+using Gromi.Infra.Entity.Common.Enums;
 
-namespace Gromi.Infra.Repository
+namespace Gromi.Infra.Repository.Shared
 {
     /// <summary>
     /// 通用仓储（支持多数据库和异步操作）
