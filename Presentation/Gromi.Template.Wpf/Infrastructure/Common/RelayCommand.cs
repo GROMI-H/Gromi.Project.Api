@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Gromi.Template.Wpf.Common
+namespace Gromi.Template.Wpf.Infrastructure.Common
 {
     /// <summary>
     /// 处理命令逻辑

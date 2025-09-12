@@ -1,6 +1,4 @@
-﻿using Gromi.Template.Wpf.Configurations;
-using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Gromi.Template.Wpf
 {
@@ -11,8 +9,6 @@ namespace Gromi.Template.Wpf
     {
         public App()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddAutoInjectConfiguration();
         }
     }
 }

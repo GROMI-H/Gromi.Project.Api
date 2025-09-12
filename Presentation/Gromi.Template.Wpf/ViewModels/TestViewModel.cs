@@ -1,4 +1,4 @@
-﻿using Gromi.Template.Wpf.Common;
+﻿using Gromi.Template.Wpf.Infrastructure.Common;
 using Gromi.Template.Wpf.Infrastructure.Models;
 using System.ComponentModel;
 using System.Windows.Input;
