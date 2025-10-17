@@ -12,6 +12,7 @@ namespace Gromi.Template.Wpf.ViewModels
         public TestViewModel()
         {
             Add = new RelayCommand(execute: _ => ExecuteAddClickCommand(), canExecute: _ => CanExecuteAddClickCommand());
+            Sub = new RelayCommand(execute: _ => ExecuteSubClickCommand(), canExecute: _ => CanExecuteSubClickCommand());
         }
 
         #endregion 初始化
@@ -61,6 +62,8 @@ namespace Gromi.Template.Wpf.ViewModels
 
         #region 命令
 
+        #region Add
+
         public ICommand Add { get; }
 
         private void ExecuteAddClickCommand()
@@ -72,6 +75,24 @@ namespace Gromi.Template.Wpf.ViewModels
         {
             return true;
         }
+
+        #endregion Add
+
+        #region Sub
+
+        public ICommand Sub { get; }
+
+        private void ExecuteSubClickCommand()
+        {
+            Result = OperData_One - OperData_Two;
+        }
+
+        private bool CanExecuteSubClickCommand()
+        {
+            return false;
+        }
+
+        #endregion Sub
 
         #endregion 命令
     }

@@ -5,6 +5,14 @@
     /// </summary>
     public enum DbKey
     {
-        DbTemp
+        /// <summary>
+        /// 测试数据库
+        /// </summary>
+        DbTemp,
+
+        /// <summary>
+        /// CraftHub数据库
+        /// </summary>
+        DbCraftHub
     }
 }

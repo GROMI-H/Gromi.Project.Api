@@ -1,4 +1,7 @@
-﻿namespace Gromi.Infra.Entity.Common.Dtos
+﻿using FreeSql.DataAnnotations;
+using Gromi.Infra.Entity.Common.Attributes;
+
+namespace Gromi.Infra.Entity.Common.Dtos
 {
     /// <summary>
     /// 基础实体
@@ -8,11 +11,14 @@
         /// <summary>
         /// ID
         /// </summary>
+        [Column(IsPrimary = true)]
+        [Snowflake]
         public virtual long Id { get; set; }
 
         /// <summary>
         /// 创建时间
         /// </summary>
+        [Column(CanUpdate = false)]
         public virtual DateTime CreateTime { get; set; }
 
         /// <summary>

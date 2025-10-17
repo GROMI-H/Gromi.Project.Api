@@ -32,6 +32,7 @@
                   Text="{Binding Result}">
             </TextBox>
             <Button Content="加法" Margin="5" Style="{StaticResource ButtonPrimary}" Command="{Binding Add}" />
+            <Button Content="减法" Margin="5" Style="{StaticResource ButtonDanger}" Command="{Binding Sub}" />
         </StackPanel>
     </hc:TransitioningContentControl>
 </Page>
