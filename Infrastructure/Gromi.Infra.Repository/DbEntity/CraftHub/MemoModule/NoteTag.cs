@@ -1,6 +1,7 @@
 ﻿using FreeSql.DataAnnotations;
 using Gromi.Infra.Entity.Common.Attributes;
 using Gromi.Infra.Entity.Common.Dtos;
+using Gromi.Infra.Entity.Common.Enums;
 using Gromi.Infra.Repository.DbEntity.CraftHub.SystemModule;
 
 namespace Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule
@@ -25,6 +26,18 @@ namespace Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule
         /// </summary>
         [Column(StringLength = 25)]
         public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 标签描述
+        /// </summary>
+        [Column(StringLength = 255)]
+        public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 是否删除
+        /// </summary>
+        [Column(MapType = typeof(int))]
+        public DeleteEnum IsDeleted { get; set; } = DeleteEnum.NotDeleted;
 
         /// <summary>
         /// 用户Id

@@ -35,10 +35,10 @@ namespace Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule
         public NoteType Type { get; set; } = NoteType.Default;
 
         /// <summary>
-        /// 笔记状态
+        /// 是否删除
         /// </summary>
         [Column(MapType = typeof(int))]
-        public StatusEnum Status { get; set; } = StatusEnum.Unknown;
+        public DeleteEnum Status { get; set; } = DeleteEnum.NotDeleted;
 
         /// <summary>
         /// 用户Id
@@ -65,6 +65,11 @@ namespace Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule
         /// </summary>
         [Navigate(nameof(TagId))]
         public virtual NoteTag Tag { get; set; }
+
+        /// <summary>
+        /// 流程(导航属性)
+        /// </summary>
+        public virtual ICollection<FlowItem> FlowItems { get; set; } = new List<FlowItem>();
 
         #endregion 关联
     }
