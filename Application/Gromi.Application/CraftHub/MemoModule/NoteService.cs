@@ -1,4 +1,5 @@
-﻿using Gromi.Infra.Entity.Common.Attributes;
+﻿using AutoMapper;
+using Gromi.Infra.Entity.Common.Attributes;
 using Gromi.Infra.Entity.Common.Dtos;
 using Gromi.Infra.Entity.Common.Enums;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
@@ -28,12 +29,14 @@ namespace Gromi.Application.CraftHub.MemoModule
     [AutoInject(ServiceLifetime.Scoped, "Memo")]
     public class NoteService : INoteService
     {
+        private readonly IMapper _mapper;
         private readonly IFlowRepository _flowRepository;
         private readonly INoteTagRepository _tagRepository;
         private readonly INoteRecordRepository _recordRepository;
 
-        public NoteService(INoteRecordRepository recordRepository, INoteTagRepository tagRepository, IFlowRepository flowRepository)
+        public NoteService(IMapper mapper, INoteRecordRepository recordRepository, INoteTagRepository tagRepository, IFlowRepository flowRepository)
         {
+            _mapper = mapper;
             _recordRepository = recordRepository;
             _tagRepository = tagRepository;
             _flowRepository = flowRepository;
@@ -45,12 +48,13 @@ namespace Gromi.Application.CraftHub.MemoModule
             {
                 BaseResult<NoteTagDto> result = new BaseResult<NoteTagDto>();
 
-                var addRes = await _tagRepository.InsertAsync(new NoteTag { Name = tag.Name, Description = tag.Description, UserId = 0 });
+                var addRes = await _tagRepository.InsertAsync(_mapper.Map<NoteTag>(tag));
                 if (addRes != null)
                 {
                     result.Code = ResponseCodeEnum.Success;
                     result.Msg = $"标签添加成功";
-                    result.Data = new NoteTagDto { Id = addRes.Id, Name = addRes.Name, Description = addRes.Description, IsDeleted = addRes.IsDeleted };
+                    result.Data = _mapper.Map<NoteTagDto>(addRes);
+                    result.DataCount = 1;
                 }
                 else
                 {

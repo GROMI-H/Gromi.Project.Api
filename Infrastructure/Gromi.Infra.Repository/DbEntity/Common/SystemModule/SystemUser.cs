@@ -3,12 +3,12 @@ using Gromi.Infra.Entity.Common.Attributes;
 using Gromi.Infra.Entity.Common.Dtos;
 using Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule;
 
-namespace Gromi.Infra.Repository.DbEntity.CraftHub.SystemModule
+namespace Gromi.Infra.Repository.DbEntity.Common.SystemModule
 {
     /// <summary>
     /// 用户信息
     /// </summary>
-    [Table(Name = "sys_user_info")]
+    [Table(Name = "sys_user")]
     public class UserInfo : BaseEntity
     {
         #region 字段

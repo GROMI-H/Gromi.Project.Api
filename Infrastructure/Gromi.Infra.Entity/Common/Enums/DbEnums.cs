@@ -15,4 +15,20 @@
         /// </summary>
         DbCraftHub
     }
+
+    /// <summary>
+    /// 数据库类型枚举
+    /// </summary>
+    public enum DbMode
+    {
+        /// <summary>
+        /// SQLite
+        /// </summary>
+        SQLite,
+
+        /// <summary>
+        /// MySQL
+        /// </summary>
+        MySQL
+    }
 }

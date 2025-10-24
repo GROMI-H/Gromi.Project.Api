@@ -1,4 +1,6 @@
-﻿namespace Gromi.Infra.Entity.Common.Settings
+﻿using Gromi.Infra.Entity.Common.Enums;
+
+namespace Gromi.Infra.Entity.Common.Settings
 {
     /// <summary>
     /// FreeSql配置类
@@ -19,5 +21,10 @@
         /// 是否开启实体延迟加载
         /// </summary>
         public bool EnableLazyLoading { get; set; } = false;
+
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
+        public DbMode DbMode { get; set; } = DbMode.SQLite;
     }
 }

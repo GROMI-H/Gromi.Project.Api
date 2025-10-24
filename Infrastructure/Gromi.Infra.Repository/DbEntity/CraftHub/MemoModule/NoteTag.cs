@@ -2,7 +2,7 @@
 using Gromi.Infra.Entity.Common.Attributes;
 using Gromi.Infra.Entity.Common.Dtos;
 using Gromi.Infra.Entity.Common.Enums;
-using Gromi.Infra.Repository.DbEntity.CraftHub.SystemModule;
+using Gromi.Infra.Repository.DbEntity.Common.SystemModule;
 
 namespace Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule
 {

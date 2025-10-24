@@ -35,8 +35,15 @@ namespace Gromi.CraftHub.Api.Configurations
             {
                 multiFreeSql.Register(DbKey.DbCraftHub, () => new Lazy<IFreeSql>(() =>
                 {
+                    var dbType = dicDbConnections[DbKey.DbCraftHub].DbMode switch
+                    {
+                        DbMode.SQLite => DataType.Sqlite,
+                        DbMode.MySQL => DataType.MySql,
+                        _ => throw new NotSupportedException($"不支持的数据库类型：{dicDbConnections[DbKey.DbCraftHub].DbMode}")
+                    };
+
                     IFreeSql fsql = new FreeSqlBuilder()
-                        .UseConnectionString(DataType.Sqlite, dicDbConnections[DbKey.DbCraftHub].ConnectionString)
+                        .UseConnectionString(dbType, dicDbConnections[DbKey.DbCraftHub].ConnectionString)
                         .UseAdoConnectionPool(true)
                         .UseAutoSyncStructure(dicDbConnections[DbKey.DbCraftHub].EnableAutoSyncStructure) // 自动同步实体结构
                         .UseMonitorCommand(cmd => LogHelper.Info($"SQL:{cmd.CommandText}")) // 监听并输出SQL

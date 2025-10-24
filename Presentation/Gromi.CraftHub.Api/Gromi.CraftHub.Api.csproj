@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="AutoMapper" Version="15.0.1" />
 	  <PackageReference Include="FreeSql.Extensions.LazyLoading" Version="3.5.213" />
 	  <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.5.213" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
@@ -18,6 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Application\Gromi.Application.AutoMapper\Gromi.Application.AutoMapper.csproj" />
 		<ProjectReference Include="..\..\Application\Gromi.Application\Gromi.Application.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Entity\Gromi.Infra.Entity.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Repository\Gromi.Infra.Repository.csproj" />
