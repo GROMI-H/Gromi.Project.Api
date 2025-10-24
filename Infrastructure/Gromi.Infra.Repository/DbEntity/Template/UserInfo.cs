@@ -1,6 +1,6 @@
 ﻿using FreeSql.DataAnnotations;
-using Gromi.Infra.Entity.Common.Dtos;
 using Gromi.Infra.Entity.Common.Attributes;
+using Gromi.Infra.Entity.Common.Dtos;
 
 namespace Gromi.Infra.Repository.DbEntity.Template
 {

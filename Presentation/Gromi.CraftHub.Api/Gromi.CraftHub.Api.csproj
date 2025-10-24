@@ -8,19 +8,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Controllers\" />
-		<Folder Include="Docs\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	  <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.4" />
-	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.4" />
-	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.4" />
+	  <PackageReference Include="FreeSql.Extensions.LazyLoading" Version="3.5.213" />
+	  <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.5.213" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.6" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.6" />
 	  <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Application\Gromi.Application\Gromi.Application.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Entity\Gromi.Infra.Entity.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Repository\Gromi.Infra.Repository.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Utils\Gromi.Infra.Utils.csproj" />

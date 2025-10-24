@@ -18,7 +18,7 @@ namespace Gromi.CraftHub.Api.Configurations
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            string[] injectKeys = { "Default", "CraftHub" };
+            string[] injectKeys = { "Default", "CraftHub", "Memo" };
             // 利用反射获取程序所有加载类型
             var assemblies = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Gromi.*.dll").Select(Assembly.LoadFrom).ToList();
             if (assemblies != null && assemblies.Count > 0)

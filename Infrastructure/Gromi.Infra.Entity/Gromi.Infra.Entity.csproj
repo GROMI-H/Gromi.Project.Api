@@ -7,14 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CraftHub\SystemModule\**" />
+    <Compile Remove="Template\**" />
+    <EmbeddedResource Remove="CraftHub\SystemModule\**" />
+    <EmbeddedResource Remove="Template\**" />
+    <None Remove="CraftHub\SystemModule\**" />
+    <None Remove="Template\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Common\Params\" />
-    <Folder Include="CraftHub\SystemModule\Dtos\" />
-    <Folder Include="Template\Dtos\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FreeSql" Version="3.5.213" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
   </ItemGroup>
 
 </Project>

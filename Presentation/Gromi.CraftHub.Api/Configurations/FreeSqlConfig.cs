@@ -26,21 +26,21 @@ namespace Gromi.CraftHub.Api.Configurations
 
             Dictionary<DbKey, DbConnectionConfig> dicDbConnections = new Dictionary<DbKey, DbConnectionConfig>
             {
-                {DbKey.DbTemp, configuration.GetSection("FreeSqlConfig").Get<DbConnectionConfig>() ?? new DbConnectionConfig() }
+                {DbKey.DbCraftHub, configuration.GetSection("FreeSqlConfig").Get<DbConnectionConfig>() ?? new DbConnectionConfig() }
             };
 
             var multiFreeSql = new MultiFreeSqlManager<DbKey>();
 
-            if (dicDbConnections[DbKey.DbTemp] != null)
+            if (dicDbConnections[DbKey.DbCraftHub] != null)
             {
-                multiFreeSql.Register(DbKey.DbTemp, () => new Lazy<IFreeSql>(() =>
+                multiFreeSql.Register(DbKey.DbCraftHub, () => new Lazy<IFreeSql>(() =>
                 {
                     IFreeSql fsql = new FreeSqlBuilder()
-                        .UseConnectionString(DataType.Sqlite, dicDbConnections[DbKey.DbTemp].ConnectionString)
+                        .UseConnectionString(DataType.Sqlite, dicDbConnections[DbKey.DbCraftHub].ConnectionString)
                         .UseAdoConnectionPool(true)
-                        .UseAutoSyncStructure(dicDbConnections[DbKey.DbTemp].EnableAutoSyncStructure) // 自动同步实体结构
+                        .UseAutoSyncStructure(dicDbConnections[DbKey.DbCraftHub].EnableAutoSyncStructure) // 自动同步实体结构
                         .UseMonitorCommand(cmd => LogHelper.Info($"SQL:{cmd.CommandText}")) // 监听并输出SQL
-                        .UseLazyLoading(dicDbConnections[DbKey.DbTemp].EnableLazyLoading) // 开启实体的延迟加载：如果实体有导航属性(外键),访问时才会去数据库加载；会增加SQL次数，但简化了代码
+                        .UseLazyLoading(dicDbConnections[DbKey.DbCraftHub].EnableLazyLoading) // 开启实体的延迟加载：如果实体有导航属性(外键),访问时才会去数据库加载；会增加SQL次数，但简化了代码
                         .Build();
 
                     // 审计属性值

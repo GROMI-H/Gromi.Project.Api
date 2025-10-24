@@ -35,6 +35,17 @@ namespace Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule
         public NoteType Type { get; set; } = NoteType.Default;
 
         /// <summary>
+        /// 账号 - Type=NoteType.Password时使用
+        /// </summary>
+        [Column(StringLength = 25)]
+        public string Account { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 内容，存放密码或者一般内容
+        /// </summary>
+        public string Content { get; set; } = string.Empty;
+
+        /// <summary>
         /// 是否删除
         /// </summary>
         [Column(MapType = typeof(int))]
