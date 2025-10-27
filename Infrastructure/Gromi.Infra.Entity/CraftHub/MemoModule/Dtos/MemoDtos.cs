@@ -1,4 +1,4 @@
-﻿using Gromi.Infra.Entity.Common.Enums;
+﻿using Gromi.Infra.Entity.Common.BaseModule.Enums;
 
 namespace Gromi.Infra.Entity.CraftHub.MemoModule.Dtos
 {

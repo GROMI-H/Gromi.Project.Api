@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Gromi.Infra.Entity.Common.Attributes;
-using Gromi.Infra.Entity.Common.Dtos;
-using Gromi.Infra.Entity.Common.Enums;
+using Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule;
+using Gromi.Infra.Entity.Common.BaseModule.Attributes;
+using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using Gromi.Infra.Entity.Common.BaseModule.Enums;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
-using Gromi.Infra.Repository.DbEntity.CraftHub.MemoModule;
 using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.CraftHub.MemoModule;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +54,6 @@ namespace Gromi.Application.CraftHub.MemoModule
                     result.Code = ResponseCodeEnum.Success;
                     result.Msg = $"标签添加成功";
                     result.Data = _mapper.Map<NoteTagDto>(addRes);
-                    result.DataCount = 1;
                 }
                 else
                 {

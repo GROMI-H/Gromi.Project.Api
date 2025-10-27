@@ -22,7 +22,6 @@
 		<ProjectReference Include="..\..\Application\Gromi.Application.AutoMapper\Gromi.Application.AutoMapper.csproj" />
 		<ProjectReference Include="..\..\Application\Gromi.Application\Gromi.Application.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Entity\Gromi.Infra.Entity.csproj" />
-		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Repository\Gromi.Infra.Repository.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Utils\Gromi.Infra.Utils.csproj" />
 	</ItemGroup>
 

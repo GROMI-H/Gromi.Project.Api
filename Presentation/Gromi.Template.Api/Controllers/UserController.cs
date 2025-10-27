@@ -1,5 +1,5 @@
 ﻿using Gromi.Application.Template;
-using Gromi.Infra.Repository.DbEntity.Template;
+using Gromi.Infra.Base.DbEntity.Template;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gromi.Template.Api.Controllers

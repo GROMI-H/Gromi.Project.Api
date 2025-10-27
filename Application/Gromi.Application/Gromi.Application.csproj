@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Entity\Gromi.Infra.Entity.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Utils\Gromi.Infra.Utils.csproj" />
+    <ProjectReference Include="..\..\Repository\Gromi.Repository\Gromi.Repository.csproj" />
     <ProjectReference Include="..\..\Repository\Gromi.Template.Repository\Gromi.Repository.csproj" />
   </ItemGroup>
 

@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.DataAccess\Gromi.Infra.DataAccess.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Entity\Gromi.Infra.Entity.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Gromi.Infra.Repository\Gromi.Infra.Repository.csproj" />
   </ItemGroup>
 
 </Project>

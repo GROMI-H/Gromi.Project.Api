@@ -1,5 +1,5 @@
-﻿using Gromi.Infra.Entity.Common.Attributes;
-using Gromi.Infra.Repository.Shared;
+﻿using Gromi.Infra.Base.Shared;
+using Gromi.Infra.Entity.Common.Attributes;
 using System.Reflection;
 
 namespace Gromi.Template.Api.Configurations

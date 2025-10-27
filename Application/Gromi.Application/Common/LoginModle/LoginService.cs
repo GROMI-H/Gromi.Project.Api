@@ -1,0 +1,126 @@
+﻿using AutoMapper;
+using Gromi.Application.Common.AuthModule;
+using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+using Gromi.Infra.Entity.Common.BaseModule.Attributes;
+using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using Gromi.Infra.Entity.Common.BaseModule.Enums;
+using Gromi.Infra.Entity.Common.LoginModule.Dtos;
+using Gromi.Infra.Entity.Common.LoginModule.Params;
+using Gromi.Infra.Entity.Common.SystemModule.Dtos;
+using Gromi.Infra.Utils.Helpers;
+using Gromi.Repository.Common.SystemModule;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Gromi.Application.Common.LoginModle
+{
+    /// <summary>
+    /// 登录服务接口
+    /// </summary>
+    public interface ILoginService
+    {
+        /// <summary>
+        /// 用户注册
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult> Register(RegisterParam param);
+
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <returns></returns>
+        Task<BaseResult> GetCaptcha();
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <returns></returns>
+        Task<BaseResult<LoginResponse>> Login(LoginParam loginParam);
+    }
+
+    /// <summary>
+    /// 登录服务实现
+    /// </summary>
+    [AutoInject(ServiceLifetime.Scoped)]
+    public class LoginService : ILoginService
+    {
+        private readonly IMapper _mapper;
+        private readonly IJwtService _jwtService;
+        private readonly IUserRepository _userRepository;
+
+        public LoginService(IMapper mapperr, IJwtService jwtService, IUserRepository userRepository)
+        {
+            _mapper = mapperr;
+            _jwtService = jwtService;
+            _userRepository = userRepository;
+        }
+
+        public async Task<BaseResult> Register(RegisterParam param)
+        {
+            try
+            {
+                BaseResult result = new BaseResult();
+                var addRes = await _userRepository.InsertAsync(_mapper.Map<UserInfo>(param));
+
+                result.Code = addRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
+                result.Msg = addRes != null ? "注册成功" : "注册失败";
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error($"注册失败：{ex.Message}");
+                return await Task.FromResult(new BaseResult(ResponseCodeEnum.Fail, "注册失败"));
+            }
+        }
+
+        public Task<BaseResult> GetCaptcha()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<BaseResult<LoginResponse>> Login(LoginParam loginParam)
+        {
+            try
+            {
+                BaseResult<LoginResponse> result = new BaseResult<LoginResponse>();
+
+                #region 校验验证码
+
+                //
+
+                #endregion 校验验证码
+
+                var verifyRes = await _userRepository.VerifyPassword(loginParam.Account, loginParam.Password);
+                if (verifyRes != -1)
+                {
+                    var userInfo = await _userRepository.GetModelAsync(verifyRes);
+                    var tokenDto = await _jwtService.CreateToken(_mapper.Map<UserInfoDto>(userInfo));
+                    if (tokenDto == null || tokenDto.Data == null)
+                    {
+                        result.Code = ResponseCodeEnum.InternalError;
+                        result.Msg = $"登录失败：创建Token失败";
+                        return result;
+                    }
+
+                    result.Data = _mapper.Map<LoginResponse>(userInfo);
+                    result.Data.Token = tokenDto.Data.Token;
+                    result.Msg = "登录成功";
+                    return result;
+                }
+                else
+                {
+                    result.Code = ResponseCodeEnum.Fail;
+                    result.Msg = "密码校验失败";
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error($"登录失败:{ex.Message}");
+                return await Task.FromResult(new BaseResult<LoginResponse>(ResponseCodeEnum.InternalError, ex.Message));
+            }
+        }
+    }
+}

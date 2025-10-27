@@ -1,8 +1,8 @@
 ﻿using FreeSql;
-using Gromi.Infra.Entity.Common.Attributes;
-using Gromi.Infra.Entity.Common.Enums;
-using Gromi.Infra.Entity.Common.Settings;
-using Gromi.Infra.Repository.Shared;
+using Gromi.Infra.DataAccess.Shared;
+using Gromi.Infra.Entity.Common.BaseModule.Attributes;
+using Gromi.Infra.Entity.Common.BaseModule.Enums;
+using Gromi.Infra.Entity.Common.BaseModule.Settings;
 using Gromi.Infra.Utils.Helpers;
 using System.Reflection;
 using Yitter.IdGenerator;

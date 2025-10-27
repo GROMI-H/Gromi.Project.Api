@@ -1,5 +1,5 @@
 ﻿using Gromi.Application.CraftHub.MemoModule;
-using Gromi.Infra.Entity.Common.Dtos;
+using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
