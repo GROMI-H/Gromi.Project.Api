@@ -25,6 +25,18 @@ namespace Gromi.CraftHub.Api.Controllers.LoginModule
         }
 
         /// <summary>
+        /// 获取验证码图片
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Captcha")]
+        public async Task<IActionResult> Captcha()
+        {
+            BaseResult<byte[]> res = await _loginService.GetCaptcha();
+
+            return File(res.Data, "image/png");
+        }
+
+        /// <summary>
         /// 用户注册
         /// </summary>
         /// <param name="param"></param>

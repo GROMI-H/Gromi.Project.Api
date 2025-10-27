@@ -29,7 +29,7 @@ namespace Gromi.Application.Common.LoginModle
         /// 获取验证码
         /// </summary>
         /// <returns></returns>
-        Task<BaseResult> GetCaptcha();
+        Task<BaseResult<byte[]>> GetCaptcha();
 
         /// <summary>
         /// 用户登录
@@ -74,9 +74,30 @@ namespace Gromi.Application.Common.LoginModle
             }
         }
 
-        public Task<BaseResult> GetCaptcha()
+        public async Task<BaseResult<byte[]>> GetCaptcha()
         {
-            throw new NotImplementedException();
+            try
+            {
+                BaseResult<byte[]> result = new BaseResult<byte[]>();
+
+                var captchaData = CaptchaHelper.GenerateCaptcha();
+
+                #region TODO 存入缓存
+
+                // Redis
+
+                #endregion TODO 存入缓存
+
+                result.Code = ResponseCodeEnum.Success;
+                result.Data = captchaData.Image;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error($"获取验证码图片失败:{ex.Message}");
+                return await Task.FromResult(new BaseResult<byte[]>(ResponseCodeEnum.InternalError, ex.Message));
+            }
         }
 
         public async Task<BaseResult<LoginResponse>> Login(LoginParam loginParam)
@@ -84,12 +105,6 @@ namespace Gromi.Application.Common.LoginModle
             try
             {
                 BaseResult<LoginResponse> result = new BaseResult<LoginResponse>();
-
-                #region 校验验证码
-
-                //
-
-                #endregion 校验验证码
 
                 var verifyRes = await _userRepository.VerifyPassword(loginParam.Account, loginParam.Password);
                 if (verifyRes != -1)

@@ -51,10 +51,10 @@ namespace Gromi.CraftHub.Api
 
             #region Middleware Configuration
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwaggerSetup(enableSwagger);
-            }
+            //if (app.Environment.IsDevelopment())
+            //{
+            app.UseSwaggerSetup(enableSwagger);
+            //}
 
             app.UseAuthorization();
 
