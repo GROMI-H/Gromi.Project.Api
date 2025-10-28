@@ -11,6 +11,12 @@ namespace Gromi.Repository.CraftHub.MemoModule
     /// </summary>
     public interface INoteTagRepository : IRepository<NoteTag>
     {
+        /// <summary>
+        /// 删除标签 - 软删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<OperationResEnum> DeleteNoteTagAsync(long id);
     }
 
     /// <summary>
@@ -21,6 +27,16 @@ namespace Gromi.Repository.CraftHub.MemoModule
     {
         public NoteTagRepository(IMultiFreeSqlManager<DbKey> multiFreeSql) : base(multiFreeSql, DbKey.DbCraftHub)
         {
+        }
+
+        public async Task<OperationResEnum> DeleteNoteTagAsync(long id)
+        {
+            var tag = await _fsql.GetRepository<NoteTag>().Where(t => t.Id == id).FirstAsync();
+            if (tag == null) return OperationResEnum.NotFound;
+
+            tag.IsDeleted = DeleteEnum.Deleted;
+            var res = await _fsql.GetRepository<NoteTag>().UpdateAsync(tag);
+            return res > 0 ? OperationResEnum.Success : OperationResEnum.Fail;
         }
     }
 }

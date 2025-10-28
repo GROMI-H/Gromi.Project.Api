@@ -1,5 +1,6 @@
 ﻿using Gromi.Application.CraftHub.MemoModule;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using Gromi.Infra.Entity.Common.BaseModule.Params;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,8 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
             _noteService = noteService;
         }
 
+        #region 标签
+
         /// <summary>
         /// 添加笔记标签
         /// </summary>
@@ -35,5 +38,30 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
             BaseResult<NoteTagDto> res = await _noteService.AddNoteTag(tag);
             return Ok(res);
         }
+
+        /// <summary>
+        /// 删除笔记标签
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("DeleteNoteTag")]
+        public async Task<IActionResult> DeleteNoteTag([FromBody] BaseParam param)
+        {
+            BaseResult result = await _noteService.DeletNoteTag(param);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// 查询标签列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNoteTagList")]
+        public async Task<IActionResult> GetNoteTagList()
+        {
+            BaseResult<IEnumerable<NoteTagDto>> result = await _noteService.GetNoteTagList();
+            return Ok(result);
+        }
+
+        #endregion 标签
     }
 }

@@ -40,4 +40,25 @@
         /// </summary>
         Timeout = 6,
     }
+
+    /// <summary>
+    /// 操作结果枚举
+    /// </summary>
+    public enum OperationResEnum
+    {
+        /// <summary>
+        /// 成功
+        /// </summary>
+        Success = 0,
+
+        /// <summary>
+        /// 失败
+        /// </summary>
+        Fail = 1,
+
+        /// <summary>
+        /// 数据未找到
+        /// </summary>
+        NotFound = 2
+    }
 }

@@ -39,5 +39,11 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         public StatusEnum Enable { get; set; } = StatusEnum.Enabled;
 
         #endregion 字段
+
+        #region 关联
+
+        //
+
+        #endregion 关联
     }
 }

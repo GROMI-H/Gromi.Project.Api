@@ -9,5 +9,10 @@
         /// JwtToken
         /// </summary>
         public string Token { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 主键ID
+        /// </summary>
+        public long? Id { get; set; }
     }
 }
