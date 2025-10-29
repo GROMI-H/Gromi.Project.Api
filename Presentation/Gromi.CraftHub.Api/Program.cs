@@ -44,6 +44,8 @@ namespace Gromi.CraftHub.Api
             builder.Services.AddFreeSqlConfiguration(builder.Configuration);
             // 配置 其他工具
             builder.Services.AddOtherConfiguration();
+            // 配置Redis
+            builder.Services.AddEasyCacheConfiguration(builder.Configuration);
 
             #endregion Add services to the container
 

@@ -1,4 +1,8 @@
-﻿using SkiaSharp;
+﻿using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace Gromi.Infra.Utils.Helpers
 {
@@ -6,124 +10,127 @@ namespace Gromi.Infra.Utils.Helpers
     {
         private static readonly char[] _chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789".ToArray();
 
-        // 固定背景和干扰线颜色
-        private static readonly SKColor BackgroundColor = new(240, 240, 240); // 浅灰
+        private static readonly Color BackgroundColor = Color.FromRgb(240, 240, 240); // 浅灰
+        private static readonly Color LineColor = Color.FromRgb(180, 180, 180);       // 中灰
 
-        private static readonly SKColor LineColor = new(180, 180, 180);       // 中灰
+        private static readonly Color[] Palette = new[] {
+            Color.FromRgb(220, 50, 47),   // 红
+            Color.FromRgb(38, 139, 210),  // 蓝
+            Color.FromRgb(133, 153, 0),   // 绿
+            Color.FromRgb(181, 137, 0),   // 橙
+            Color.FromRgb(108, 113, 196)  // 紫
+        };
 
         /// <summary>
         /// 生成验证码图片
         /// </summary>
-        /// <param name="length">验证码长度</param>
-        /// <param name="width">图片宽度</param>
-        /// <param name="height">图片高度</param>
-        /// <returns></returns>
         public static (string Code, byte[] Image) GenerateCaptcha(int length = 6, int width = 130, int height = 48)
         {
             string code = GenerateCode(length);
-
             var rnd = new Random();
 
-            using var surface = SKSurface.Create(new SKImageInfo(width, height));
-            var canvas = surface.Canvas;
+            using var image = new Image<Rgba32>(width, height, BackgroundColor);
 
-            canvas.Clear(BackgroundColor);
-            DrawNoiseLines(canvas, width, height, 25, LineColor, rnd);
-            DrawCodeChars(canvas, code, width, height, rnd);
+            DrawNoiseLines(image, width, height, 25, LineColor, rnd);
+            DrawCodeChars(image, code, width, height, rnd);
 
-            using var image = surface.Snapshot();
-            using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-            return (code, data.ToArray());
+            using var ms = new MemoryStream();
+            image.SaveAsPng(ms);
+            return (code, ms.ToArray());
         }
 
         /// <summary>
         /// 生成随机验证码字符串
         /// </summary>
-        /// <param name="length"></param>
-        /// <returns></returns>
         private static string GenerateCode(int length)
         {
             var rnd = new Random();
             char[] buffer = new char[length];
             for (int i = 0; i < length; i++)
-            {
                 buffer[i] = _chars[rnd.Next(_chars.Length)];
-            }
             return new string(buffer);
         }
 
         /// <summary>
         /// 绘制验证码字符
         /// </summary>
-        /// <param name="canvas"></param>
-        /// <param name="code"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="rnd"></param>
-        private static void DrawCodeChars(SKCanvas canvas, string code, int width, int height, Random rnd)
+        private static void DrawCodeChars(Image<Rgba32> image, string code, int width, int height, Random rnd)
         {
-            int charWidth = width / code.Length;
+            int totalWidth = 0;
+            var fontCollection = new FontCollection();
+            Font font;
+            try
+            {
+                font = SystemFonts.CreateFont("Arial", 26, FontStyle.Bold);
+            }
+            catch
+            {
+                // 回退方案：使用系统默认字体
+                font = SystemFonts.CreateFont("DejaVu Sans", 26, FontStyle.Bold);
+            }
+
+            // 计算所有字符的总宽度
+            var charWidths = new float[code.Length];
             for (int i = 0; i < code.Length; i++)
             {
-                float angle = rnd.Next(-25, 25);
-                var color = GetRandomColor(rnd);
-                float textSize = rnd.Next(22, 28);
-
-                using var typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold);
-                using var font = new SKFont(typeface, textSize);
-                using var paint = new SKPaint
-                {
-                    Color = color,
-                    IsAntialias = true
-                };
-
-                float x = i * charWidth + 10;
-                float y = height / 2 + textSize / 3;
-
-                canvas.Save();
-                canvas.Translate(x, y);
-                canvas.RotateDegrees(angle);
-                canvas.DrawText(code[i].ToString(), 0, 0, font, paint);
-                canvas.Restore();
+                var text = code[i].ToString();
+                var textSize = TextMeasurer.MeasureSize(text, new TextOptions(font));
+                charWidths[i] = textSize.Width;
+                totalWidth += (int)textSize.Width;
             }
+
+            // 根据总宽度计算起始的 X 坐标，确保水平居中
+            int startX = (width - totalWidth) / 2;
+
+            image.Mutate(ctx =>
+            {
+                for (int i = 0; i < code.Length; i++)
+                {
+                    float angle = rnd.Next(-25, 25);
+                    var color = Palette[rnd.Next(Palette.Length)];
+                    float textSize = rnd.Next(22, 28);
+
+                    var drawFont = new Font(font, textSize);
+                    var text = code[i].ToString();
+
+                    // 每个字符的 X 坐标
+                    var x = startX + (int)(charWidths.Take(i).Sum()) + (charWidths[i] - textSize) / 2 + 10;
+                    var y = height / 2f - textSize / 2f;
+
+                    // 旋转绘制
+                    ctx.DrawText(
+                        new DrawingOptions
+                        {
+                            GraphicsOptions = new GraphicsOptions
+                            {
+                                Antialias = true,
+                                AntialiasSubpixelDepth = 4
+                            },
+                            Transform = Matrix3x2Extensions.CreateRotationDegrees(angle, new PointF(x, y))
+                        },
+                        text,
+                        drawFont,
+                        color,
+                        new PointF(x, y)
+                    );
+                }
+            });
         }
 
         /// <summary>
         /// 绘制干扰线
         /// </summary>
-        private static void DrawNoiseLines(SKCanvas canvas, int width, int height, int count, SKColor color, Random rnd)
+        private static void DrawNoiseLines(Image<Rgba32> image, int width, int height, int count, Color color, Random rnd)
         {
-            using var paint = new SKPaint
+            image.Mutate(ctx =>
             {
-                Color = color,
-                StrokeWidth = 1,
-                IsAntialias = true
-            };
-
-            for (int i = 0; i < count; i++)
-            {
-                var p1 = new SKPoint(rnd.Next(width), rnd.Next(height));
-                var p2 = new SKPoint(rnd.Next(width), rnd.Next(height));
-                canvas.DrawLine(p1, p2, paint);
-            }
-        }
-
-        /// <summary>
-        /// 获取随机颜色
-        /// </summary>
-        /// <param name="rnd"></param>
-        /// <returns></returns>
-        private static SKColor GetRandomColor(Random rnd)
-        {
-            SKColor[] palette = new[]
-            {
-                new SKColor(220, 50, 47),   // 红
-                new SKColor(38, 139, 210),  // 蓝
-                new SKColor(133, 153, 0),   // 绿
-                new SKColor(181, 137, 0),   // 橙
-                new SKColor(108, 113, 196), // 紫
-            };
-            return palette[rnd.Next(palette.Length)];
+                for (int i = 0; i < count; i++)
+                {
+                    var p1 = new PointF(rnd.Next(width), rnd.Next(height));
+                    var p2 = new PointF(rnd.Next(width), rnd.Next(height));
+                    ctx.DrawLine(color, 1, new[] { p1, p2 });
+                }
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Gromi.Application.Common.AuthModule;
 using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+using Gromi.Infra.DataAccess.Shared;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
@@ -47,12 +48,14 @@ namespace Gromi.Application.Common.LoginModle
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepository;
+        private readonly RedisServer<string> _redisServer;
 
-        public LoginService(IMapper mapperr, IJwtService jwtService, IUserRepository userRepository)
+        public LoginService(IMapper mapperr, IJwtService jwtService, IUserRepository userRepository, RedisServer<string> redisServer)
         {
             _mapper = mapperr;
             _jwtService = jwtService;
             _userRepository = userRepository;
+            _redisServer = redisServer;
         }
 
         public async Task<BaseResult> Register(RegisterParam param)
@@ -84,7 +87,8 @@ namespace Gromi.Application.Common.LoginModle
 
                 #region TODO 存入缓存
 
-                // Redis
+                string redisKey = "test";
+                await _redisServer.SetAsync(redisKey, captchaData.Code);
 
                 #endregion TODO 存入缓存
 

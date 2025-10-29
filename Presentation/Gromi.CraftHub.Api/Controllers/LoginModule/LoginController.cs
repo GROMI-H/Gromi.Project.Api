@@ -1,4 +1,5 @@
 ﻿using Gromi.Application.Common.LoginModle;
+using Gromi.Infra.DataAccess.Shared;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.LoginModule.Params;
 using Microsoft.AspNetCore.Mvc;
