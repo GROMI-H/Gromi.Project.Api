@@ -9,5 +9,6 @@
         /// 验证码键
         /// </summary>
         public static string CaptchaKey = "Captcha";
+
     }
 }

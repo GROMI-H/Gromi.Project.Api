@@ -36,7 +36,7 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         /// <summary>
         /// 密码
         /// </summary>
-        [Column(StringLength = 16)]
+        [Column(StringLength = 50)]
         public string Password { get; set; }
 
         #endregion 字段

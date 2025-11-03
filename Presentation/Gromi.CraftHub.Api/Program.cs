@@ -46,6 +46,8 @@ namespace Gromi.CraftHub.Api
             builder.Services.AddOtherConfiguration();
             // 配置Redis
             builder.Services.AddEasyCacheConfiguration(builder.Configuration);
+            // 配置Jwt
+            builder.Services.AddJwtConfiguration(builder.Configuration);
 
             #endregion Add services to the container
 
@@ -56,12 +58,16 @@ namespace Gromi.CraftHub.Api
             var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
             SessionHelper.Init(httpContextAccessor);
 
+            app.UseRouting();
+
             //if (app.Environment.IsDevelopment())
             //{
             app.UseSwaggerSetup(enableSwagger);
             //}
-            app.UseAuthorization();
             app.UseSession();
+
+            app.UseAuthentication(); // 身份认证
+            app.UseAuthorization(); // 授权检查
 
             #endregion Middleware Configuration
 

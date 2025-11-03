@@ -2,6 +2,7 @@
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Params;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gromi.CraftHub.Api.Controllers.MemoModule
@@ -10,6 +11,7 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
     /// 笔记控制器
     /// </summary>
     [Route("api/[controller]")]
+    [Authorize(Policy = "Permission")]
     [ApiController]
     [Filter.LoggingActionFilter]
     public class MemoController : ControllerBase
