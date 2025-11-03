@@ -19,6 +19,15 @@ namespace Gromi.CraftHub.Api.Configurations
             // 1. 雪花ID生成器
             var options = new IdGeneratorOptions(workerId: 1);
             YitIdHelper.SetIdGenerator(options);
+
+            // 2.Session配置
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
+                options.Cookie.HttpOnly = true; // 使cookie只能通过Http请求访问
+                options.Cookie.IsEssential = true; // 确保cookie总是被发送
+            });
         }
     }
 }

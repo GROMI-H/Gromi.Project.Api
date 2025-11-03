@@ -3,6 +3,7 @@ using Gromi.Application.Common.AuthModule;
 using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
 using Gromi.Infra.DataAccess.Shared;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
+using Gromi.Infra.Entity.Common.BaseModule.Constant;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
 using Gromi.Infra.Entity.Common.LoginModule.Dtos;
@@ -85,12 +86,7 @@ namespace Gromi.Application.Common.LoginModle
 
                 var captchaData = CaptchaHelper.GenerateCaptcha();
 
-                #region TODO 存入缓存
-
-                string redisKey = "test";
-                await _redisServer.SetAsync(redisKey, captchaData.Code);
-
-                #endregion TODO 存入缓存
+                SessionHelper.SetSession(CommonConstant.CaptchaKey, captchaData.Code);
 
                 result.Code = ResponseCodeEnum.Success;
                 result.Data = captchaData.Image;
@@ -110,7 +106,18 @@ namespace Gromi.Application.Common.LoginModle
             {
                 BaseResult<LoginResponse> result = new BaseResult<LoginResponse>();
 
-                var verifyRes = await _userRepository.VerifyPassword(loginParam.Account, loginParam.Password);
+                long verifyRes = -1;
+                var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);
+                if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
+                {
+                    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, loginParam.Password);
+                }
+                else
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Msg = "验证码错误,请重试";
+                    return result;
+                }
                 if (verifyRes != -1)
                 {
                     var userInfo = await _userRepository.GetModelAsync(verifyRes);

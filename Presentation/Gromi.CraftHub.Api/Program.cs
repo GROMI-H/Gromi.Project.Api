@@ -53,12 +53,15 @@ namespace Gromi.CraftHub.Api
 
             #region Middleware Configuration
 
+            var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
+            SessionHelper.Init(httpContextAccessor);
+
             //if (app.Environment.IsDevelopment())
             //{
             app.UseSwaggerSetup(enableSwagger);
             //}
-
             app.UseAuthorization();
+            app.UseSession();
 
             #endregion Middleware Configuration
 

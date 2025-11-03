@@ -16,6 +16,30 @@ namespace Gromi.Application.CraftHub.MemoModule
     /// </summary>
     public interface INoteService
     {
+        #region NoteRecord
+
+        /// <summary>
+        /// 获取笔记列表
+        /// </summary>
+        /// <returns></returns>
+        Task<BaseResult<IEnumerable<NoteRecordDto>>> GetNoteRecordList();
+
+        /// <summary>
+        /// 删除笔记记录
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult> DeleteNoteRecord(BaseDeleteParam param);
+
+        /// <summary>
+        /// 添加笔记记录
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult<NoteRecordDto>> AddNoteRecord(NoteRecordDto param);
+
+        #endregion NoteRecord
+
         #region NoteTag
 
         /// <summary>
@@ -36,7 +60,7 @@ namespace Gromi.Application.CraftHub.MemoModule
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        Task<BaseResult> DeletNoteTag(BaseParam param);
+        Task<BaseResult> DeleteNoteTag(BaseDeleteParam param);
 
         #endregion NoteTag
     }
@@ -60,13 +84,137 @@ namespace Gromi.Application.CraftHub.MemoModule
             _flowRepository = flowRepository;
         }
 
+        #region NoteRecord
+
+        public async Task<BaseResult<IEnumerable<NoteRecordDto>>> GetNoteRecordList()
+        {
+            BaseResult<IEnumerable<NoteRecordDto>> result = new BaseResult<IEnumerable<NoteRecordDto>>
+            {
+                Code = ResponseCodeEnum.InternalError,
+                Data = Enumerable.Empty<NoteRecordDto>()
+            };
+            try
+            {
+                var queryRes = await _recordRepository.GetAllAsync();
+                if (queryRes != null)
+                {
+                    result.Data = _mapper.Map<IEnumerable<NoteRecordDto>>(queryRes).ToList();
+                    result.Code = ResponseCodeEnum.Success;
+                    result.Msg = "查询成功";
+                }
+                else
+                {
+                    result.Code = ResponseCodeEnum.Fail;
+                    result.Msg = "查询失败";
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.Msg = $"获取笔记列表失败:{ex.Message}";
+                LogHelper.Error(result.Msg);
+                return await Task.FromResult(result);
+            }
+        }
+
+        public async Task<BaseResult> DeleteNoteRecord(BaseDeleteParam param)
+        {
+            BaseResult result = new BaseResult
+            {
+                Code = ResponseCodeEnum.InternalError
+            };
+
+            try
+            {
+                if (param.Id == null || param.Ids == null || param.Ids.Count > 0)
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Msg = $"删除失败：参数不合法";
+                    return result;
+                }
+
+                if (param.Ids == null || param.Ids.Count > 0)
+                {
+                    param.Ids = new List<long> { param.Id.Value };
+                }
+
+                var delRes = await _recordRepository.DeleteNoteRecordAsync(param.Ids);
+
+                (result.Code, result.Msg) = delRes switch
+                {
+                    OperationResEnum.Success => (ResponseCodeEnum.Success, "删除成功"),
+                    OperationResEnum.Fail => (ResponseCodeEnum.Fail, "删除失败"),
+                    OperationResEnum.NotFound => (ResponseCodeEnum.NotFound, "删除失败：数据不存在"),
+                    _ => (ResponseCodeEnum.Success, "删除成功")
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.Msg = $"删除失败:{ex.Message}";
+                LogHelper.Error(result.Msg);
+                return await Task.FromResult(result);
+            }
+        }
+
+        public async Task<BaseResult<NoteRecordDto>> AddNoteRecord(NoteRecordDto param)
+        {
+            BaseResult<NoteRecordDto> result = new BaseResult<NoteRecordDto>
+            {
+                Code = ResponseCodeEnum.InternalError,
+                Data = param,
+                Msg = "添加失败"
+            };
+            try
+            {
+                if (param.UserId == 0 || param.TagId == 0)
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Msg = "添加失败，参数异常";
+                    return result;
+                }
+                var addRes = await _recordRepository.InsertAsync(_mapper.Map<NoteRecord>(param));
+                if (addRes != null)
+                {
+                    result.Code = ResponseCodeEnum.Success;
+                    result.Data = _mapper.Map<NoteRecordDto>(addRes);
+                    result.Msg = "添加成功";
+                }
+                else
+                {
+                    result.Code = ResponseCodeEnum.Fail;
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.Msg = $"笔记添加失败:{ex.Message}";
+                LogHelper.Error(result.Msg);
+                return await Task.FromResult(result);
+            }
+        }
+
+        #endregion NoteRecord
+
         #region NoteTag
 
         public async Task<BaseResult<NoteTagDto>> AddNoteTag(NoteTagDto tag)
         {
+            BaseResult<NoteTagDto> result = new BaseResult<NoteTagDto>()
+            {
+                Code = ResponseCodeEnum.InternalError,
+                Data = tag
+            };
             try
             {
-                BaseResult<NoteTagDto> result = new BaseResult<NoteTagDto>();
+                if (tag.UserId == 0)
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Msg = "添加失败，参数异常";
+                    return result;
+                }
 
                 var addRes = await _tagRepository.InsertAsync(_mapper.Map<NoteTag>(tag));
                 if (addRes != null)
@@ -84,23 +232,35 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
             catch (Exception ex)
             {
-                LogHelper.Error($"添加笔记标签失败：{ex.Message}");
-                return await Task.FromResult(new BaseResult<NoteTagDto>(ResponseCodeEnum.InternalError, $"添加笔记标签失败：{ex.Message}"));
+                result.Msg = $"添加笔记标签失败：{ex.Message}";
+                LogHelper.Error(result.Msg);
+                return await Task.FromResult(result);
             }
         }
 
-        public async Task<BaseResult> DeletNoteTag(BaseParam param)
+        public async Task<BaseResult> DeleteNoteTag(BaseDeleteParam param)
         {
+            BaseResult result = new BaseResult
+            {
+                Code = ResponseCodeEnum.InternalError,
+                Msg = "删除失败"
+            };
+
             try
             {
-                BaseResult result = new BaseResult();
-                if (param.Id == null)
+                if (param.Id == null || param.Ids == null || param.Ids.Count > 0)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
                     result.Msg = $"删除失败：参数不合法";
                     return result;
                 }
-                var delRes = await _tagRepository.DeleteNoteTagAsync(param.Id.Value);
+
+                if (param.Ids == null || param.Ids.Count > 0)
+                {
+                    param.Ids = new List<long> { param.Id.Value };
+                }
+
+                var delRes = await _tagRepository.DeleteNoteTagAsync(param.Ids);
 
                 (result.Code, result.Msg) = delRes switch
                 {
@@ -114,8 +274,9 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
             catch (Exception ex)
             {
-                LogHelper.Error($"删除失败:{ex.Message}");
-                return await Task.FromResult(new BaseResult(ResponseCodeEnum.InternalError, ex.Message));
+                result.Msg = $"删除失败:{ex.Message}";
+                LogHelper.Error(result.Msg);
+                return await Task.FromResult(result);
             }
         }
 
@@ -144,7 +305,8 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
             catch (Exception ex)
             {
-                LogHelper.Error($"查询失败:{ex.Message}");
+                result.Msg = $"查询失败:{ex.Message}";
+                LogHelper.Error(result.Msg);
                 return await Task.FromResult(result);
             }
         }

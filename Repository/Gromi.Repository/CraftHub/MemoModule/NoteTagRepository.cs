@@ -14,9 +14,9 @@ namespace Gromi.Repository.CraftHub.MemoModule
         /// <summary>
         /// 删除标签 - 软删除
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ids"></param>
         /// <returns></returns>
-        Task<OperationResEnum> DeleteNoteTagAsync(long id);
+        Task<OperationResEnum> DeleteNoteTagAsync(List<long> ids);
     }
 
     /// <summary>
@@ -29,13 +29,12 @@ namespace Gromi.Repository.CraftHub.MemoModule
         {
         }
 
-        public async Task<OperationResEnum> DeleteNoteTagAsync(long id)
+        public async Task<OperationResEnum> DeleteNoteTagAsync(List<long> ids)
         {
-            var tag = await _fsql.GetRepository<NoteTag>().Where(t => t.Id == id).FirstAsync();
-            if (tag == null) return OperationResEnum.NotFound;
-
-            tag.IsDeleted = DeleteEnum.Deleted;
-            var res = await _fsql.GetRepository<NoteTag>().UpdateAsync(tag);
+            var res = await _fsql.GetRepository<NoteTag>().UpdateDiy
+                .Set(entiy => entiy.IsDeleted, DeleteEnum.Deleted)
+                .Where(entiy => ids.Contains(entiy.Id))
+                .ExecuteAffrowsAsync();
             return res > 0 ? OperationResEnum.Success : OperationResEnum.Fail;
         }
     }

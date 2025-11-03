@@ -11,6 +11,12 @@ namespace Gromi.Repository.CraftHub.MemoModule
     /// </summary>
     public interface INoteRecordRepository : IRepository<NoteRecord>
     {
+        /// <summary>
+        /// 删除记录 - 软删除
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        Task<OperationResEnum> DeleteNoteRecordAsync(List<long> ids);
     }
 
     /// <summary>
@@ -21,6 +27,15 @@ namespace Gromi.Repository.CraftHub.MemoModule
     {
         public NoteRecordRepository(IMultiFreeSqlManager<DbKey> multiFreeSql) : base(multiFreeSql, DbKey.DbCraftHub)
         {
+        }
+
+        public async Task<OperationResEnum> DeleteNoteRecordAsync(List<long> ids)
+        {
+            var res = await _fsql.GetRepository<NoteRecord>().UpdateDiy
+                .Set(entiy => entiy.Status, DeleteEnum.Deleted)
+                .Where(entiy => ids.Contains(entiy.Id))
+                .ExecuteAffrowsAsync();
+            return res > 0 ? OperationResEnum.Success : OperationResEnum.Fail;
         }
     }
 }
