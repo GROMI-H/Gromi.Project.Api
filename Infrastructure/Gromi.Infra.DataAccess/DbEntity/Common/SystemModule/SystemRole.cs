@@ -1,4 +1,5 @@
 ﻿using FreeSql.DataAnnotations;
+using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule.Relations;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
@@ -42,7 +43,28 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
 
         #region 关联
 
-        //
+        /// <summary>
+        /// 角色用户关联集合
+        /// </summary>
+        [Navigate("RoleId")]
+        public List<UsersRoles> UsersRoles { get; set; }
+
+        /// <summary>
+        /// User集合
+        /// </summary>
+        [Navigate("RoleId")]
+        public List<UserInfo> Users => UsersRoles?.Select(ur => ur.User).ToList();
+
+        /// <summary>
+        /// 角色接口关联集合
+        /// </summary>
+        [Navigate("RoleId")]
+        public List<RolesApis> RolesApis { get; set; }
+
+        /// <summary>
+        /// 接口集合
+        /// </summary>
+        public List<ApiRoute> Apis => RolesApis?.Select(ra => ra.Api).ToList();
 
         #endregion 关联
     }

@@ -72,11 +72,11 @@ namespace Gromi.Application.Common.AuthModule
 
                 // 完善用户信息
                 IEnumerable<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, userInfo.Name),
-                new Claim(ClaimTypes.Role, ""),
-                new Claim(ClaimTypes.Expiration, expireAt.ToString())
-            };
+                {
+                    new Claim(ClaimTypes.Name, userInfo.Name),
+                    new Claim(ClaimTypes.Role, "SuperAdmin"),
+                    new Claim(ClaimTypes.Expiration, expireAt.ToString())
+                };
 
                 identity.AddClaims(claims);
 

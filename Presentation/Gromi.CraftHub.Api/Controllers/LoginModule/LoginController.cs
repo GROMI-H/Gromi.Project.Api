@@ -1,8 +1,8 @@
-﻿using Gromi.Application.Common.LoginModle;
-using Gromi.Infra.DataAccess.Shared;
+﻿using Gromi.Application.Common.LoginModule;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.LoginModule.Params;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace Gromi.CraftHub.Api.Controllers.LoginModule
 {
@@ -30,6 +30,7 @@ namespace Gromi.CraftHub.Api.Controllers.LoginModule
         /// </summary>
         /// <returns></returns>
         [HttpGet("Captcha")]
+        [Description("获取验证码图片")]
         public async Task<IActionResult> Captcha()
         {
             BaseResult<byte[]> res = await _loginService.GetCaptcha();
@@ -43,6 +44,7 @@ namespace Gromi.CraftHub.Api.Controllers.LoginModule
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpPost("Register")]
+        [Description("用户注册")]
         public async Task<IActionResult> Register([FromBody] RegisterParam param)
         {
             BaseResult res = await _loginService.Register(param);
@@ -55,6 +57,7 @@ namespace Gromi.CraftHub.Api.Controllers.LoginModule
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpPost("Login")]
+        [Description("用户登录")]
         public async Task<IActionResult> Login([FromBody] LoginParam param)
         {
             BaseResult res = await _loginService.Login(param);

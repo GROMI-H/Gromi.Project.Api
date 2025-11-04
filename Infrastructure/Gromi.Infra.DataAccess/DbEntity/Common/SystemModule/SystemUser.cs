@@ -1,7 +1,9 @@
 ﻿using FreeSql.DataAnnotations;
+using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule.Relations;
 using Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using System.Data;
 
 namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
 {
@@ -52,6 +54,18 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         /// 标签集合
         /// </summary>
         public virtual ICollection<NoteTag> Tags { get; set; } = new HashSet<NoteTag>();
+
+        /// <summary>
+        /// 用户角色关系集合
+        /// </summary>
+        [Navigate("UserId")]
+        public List<UsersRoles> UsersRoles { get; set; }
+
+        /// <summary>
+        /// 角色集合
+        /// </summary>
+        [Navigate("UserId")]
+        public List<SystemRole> Roles => UsersRoles?.Select(ur => ur.Role).ToList();
 
         #endregion 关联
     }

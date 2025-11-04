@@ -10,11 +10,13 @@ namespace Gromi.Infra.DataAccess.Shared
     /// <typeparam name="T"></typeparam>
     public class RedisServer<T>
     {
+        private readonly bool IsEnable;
         private readonly string PREFIX;
         private readonly IEasyCachingProvider _redisProvieder;
 
         public RedisServer(IEasyCachingProviderFactory factory, IConfiguration configuration)
         {
+            IsEnable = Convert.ToBoolean(configuration["EnableRedis"] ?? "false");
             _redisProvieder = factory.GetCachingProvider("CsRedisWithMsgpack");
             var redisConfig = configuration.GetSection("Redis").Get<RedisConfig>();
             PREFIX = redisConfig != null ? redisConfig.Prefix : string.Empty;
@@ -27,8 +29,12 @@ namespace Gromi.Infra.DataAccess.Shared
         /// <returns></returns>
         public async Task<T> GetAsync(string key)
         {
-            var cached = await _redisProvieder.GetAsync<T>($"{PREFIX}{key}");
-            return cached.HasValue ? cached.Value : default(T);
+            if (IsEnable)
+            {
+                var cached = await _redisProvieder.GetAsync<T>($"{PREFIX}{key}");
+                return cached.HasValue ? cached.Value : default(T);
+            }
+            else { return default(T); }
         }
 
         /// <summary>
@@ -40,8 +46,12 @@ namespace Gromi.Infra.DataAccess.Shared
         /// <returns></returns>
         public Task SetAsync(string key, T value, TimeSpan? expiration = null)
         {
-            expiration = expiration ?? TimeSpan.FromHours(2); // 默认两个小时
-            return _redisProvieder.SetAsync($"{PREFIX}{key}", value, expiration.Value);
+            if (IsEnable)
+            {
+                expiration = expiration ?? TimeSpan.FromHours(2); // 默认两个小时
+                return _redisProvieder.SetAsync($"{PREFIX}{key}", value, expiration.Value);
+            }
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -51,7 +61,11 @@ namespace Gromi.Infra.DataAccess.Shared
         /// <returns></returns>
         public Task RemoveAsync(string key)
         {
-            return _redisProvieder.RemoveAsync($"{PREFIX}{key}");
+            if (IsEnable)
+            {
+                return _redisProvieder.RemoveAsync($"{PREFIX}{key}");
+            }
+            return Task.CompletedTask;
         }
     }
 }

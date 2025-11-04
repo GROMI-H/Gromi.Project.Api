@@ -13,7 +13,7 @@ using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.Common.SystemModule;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Gromi.Application.Common.LoginModle
+namespace Gromi.Application.Common.LoginModule
 {
     /// <summary>
     /// 登录服务接口

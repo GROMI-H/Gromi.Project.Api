@@ -4,15 +4,16 @@ using Gromi.Infra.Entity.Common.BaseModule.Params;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace Gromi.CraftHub.Api.Controllers.MemoModule
 {
     /// <summary>
     /// 笔记控制器
     /// </summary>
+    [ApiController]
     [Route("api/[controller]")]
     [Authorize(Policy = "Permission")]
-    [ApiController]
     [Filter.LoggingActionFilter]
     public class MemoController : ControllerBase
     {
@@ -35,6 +36,7 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// <param name="record"></param>
         /// <returns></returns>
         [HttpPost("Record/Add")]
+        [Description("添加笔记记录")]
         public async Task<IActionResult> AddNoteRecord([FromBody] NoteRecordDto record)
         {
             BaseResult<NoteRecordDto> res = await _noteService.AddNoteRecord(record);
@@ -47,6 +49,7 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpPost("Record/Delete")]
+        [Description("删除笔记记录")]
         public async Task<IActionResult> DeleteNoteRecord([FromBody] BaseDeleteParam param)
         {
             BaseResult result = await _noteService.DeleteNoteRecord(param);
@@ -58,6 +61,7 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// </summary>
         /// <returns></returns>
         [HttpPost("Record/GetList")]
+        [Description("查询记录列表")]
         public async Task<IActionResult> GetNoteTagList()
         {
             BaseResult<IEnumerable<NoteRecordDto>> result = await _noteService.GetNoteRecordList();
@@ -74,6 +78,7 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// <param name="tag"></param>
         /// <returns></returns>
         [HttpPost("Tag/Add")]
+        [Description("添加笔记标签")]
         public async Task<IActionResult> AddNoteTag([FromBody] NoteTagDto tag)
         {
             BaseResult<NoteTagDto> res = await _noteService.AddNoteTag(tag);
@@ -86,6 +91,7 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpPost("Tag/Delete")]
+        [Description("删除笔记标签")]
         public async Task<IActionResult> DeleteNoteTag([FromBody] BaseDeleteParam param)
         {
             BaseResult result = await _noteService.DeleteNoteTag(param);
@@ -97,6 +103,7 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// </summary>
         /// <returns></returns>
         [HttpPost("Tag/GetList")]
+        [Description("查询标签列表")]
         public async Task<IActionResult> GetNoteRecordList()
         {
             BaseResult<IEnumerable<NoteTagDto>> result = await _noteService.GetNoteTagList();
