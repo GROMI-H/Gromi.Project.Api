@@ -38,6 +38,10 @@ namespace Gromi.CraftHub.Api
 
             // 配置自动注入
             builder.Services.AddAutoInjectConfiguration();
+            // 配置AutoMapper映射
+            //builder.Services.AddAutoMapperConfiguration(); // 因转为收费，2025-11-05弃用
+            // 配置Mapster映射
+            builder.Services.AddMapsterConfiguration();
             // 配置Swagger
             builder.Services.AddSwaggerConfiguration(enableSwagger);
             // 配置FreeSql
@@ -72,6 +76,12 @@ namespace Gromi.CraftHub.Api
 
             #endregion Middleware Configuration
 
+            // 全局缓冲，解决request中获取body为空情况
+            app.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+                return next(context);
+            });
             app.MapControllers();
             app.Run();
         }

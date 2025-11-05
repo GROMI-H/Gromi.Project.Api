@@ -53,19 +53,17 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         /// <summary>
         /// 标签集合
         /// </summary>
-        public virtual ICollection<NoteTag> Tags { get; set; } = new HashSet<NoteTag>();
+        public virtual ICollection<NoteTag> Tags { get; set; } = new List<NoteTag>();
 
         /// <summary>
         /// 用户角色关系集合
         /// </summary>
-        [Navigate("UserId")]
-        public List<UsersRoles> UsersRoles { get; set; }
+        public virtual ICollection<UsersRoles> UsersRoles { get; set; } = new List<UsersRoles>();
 
         /// <summary>
         /// 角色集合
         /// </summary>
-        [Navigate("UserId")]
-        public List<SystemRole> Roles => UsersRoles?.Select(ur => ur.Role).ToList();
+        public virtual ICollection<SystemRole> Roles => UsersRoles?.Select(ur => ur.Role).ToList();
 
         #endregion 关联
     }

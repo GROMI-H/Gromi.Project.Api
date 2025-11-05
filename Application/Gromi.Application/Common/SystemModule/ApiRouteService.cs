@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+﻿using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
 using Gromi.Infra.Entity.Common.SystemModule.Dtos;
 using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.Common.SystemModule;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gromi.Application.Common.SystemModule
@@ -29,12 +29,10 @@ namespace Gromi.Application.Common.SystemModule
     [AutoInject(ServiceLifetime.Scoped)]
     public class ApiRouteService : IApiRouteService
     {
-        private readonly IMapper _mapper;
         private readonly IApiRouteRepository _apiRouteRepository;
 
-        public ApiRouteService(IMapper mapper, IApiRouteRepository apiRouteRepository)
+        public ApiRouteService(IApiRouteRepository apiRouteRepository)
         {
-            _mapper = mapper;
             _apiRouteRepository = apiRouteRepository;
         }
 
@@ -53,7 +51,7 @@ namespace Gromi.Application.Common.SystemModule
                     return result;
                 }
 
-                await _apiRouteRepository.UpsertApiRouteAsync(_mapper.Map<IEnumerable<ApiRoute>>(param));
+                await _apiRouteRepository.UpsertApiRouteAsync(param.Adapt<IEnumerable<ApiRoute>>());
                 result.Code = ResponseCodeEnum.Success;
                 result.Msg = "更新成功";
 

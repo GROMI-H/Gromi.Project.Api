@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule;
+﻿using Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
@@ -7,6 +6,7 @@ using Gromi.Infra.Entity.Common.BaseModule.Params;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
 using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.CraftHub.MemoModule;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gromi.Application.CraftHub.MemoModule
@@ -71,14 +71,12 @@ namespace Gromi.Application.CraftHub.MemoModule
     [AutoInject(ServiceLifetime.Scoped, "Memo")]
     public class NoteService : INoteService
     {
-        private readonly IMapper _mapper;
         private readonly IFlowRepository _flowRepository;
         private readonly INoteTagRepository _tagRepository;
         private readonly INoteRecordRepository _recordRepository;
 
-        public NoteService(IMapper mapper, INoteRecordRepository recordRepository, INoteTagRepository tagRepository, IFlowRepository flowRepository)
+        public NoteService(INoteRecordRepository recordRepository, INoteTagRepository tagRepository, IFlowRepository flowRepository)
         {
-            _mapper = mapper;
             _recordRepository = recordRepository;
             _tagRepository = tagRepository;
             _flowRepository = flowRepository;
@@ -98,7 +96,7 @@ namespace Gromi.Application.CraftHub.MemoModule
                 var queryRes = await _recordRepository.GetAllAsync();
                 if (queryRes != null)
                 {
-                    result.Data = _mapper.Map<IEnumerable<NoteRecordDto>>(queryRes).ToList();
+                    result.Data = queryRes.Adapt<IEnumerable<NoteRecordDto>>().ToList();
                     result.Code = ResponseCodeEnum.Success;
                     result.Msg = "查询成功";
                 }
@@ -175,11 +173,11 @@ namespace Gromi.Application.CraftHub.MemoModule
                     result.Msg = "添加失败，参数异常";
                     return result;
                 }
-                var addRes = await _recordRepository.InsertAsync(_mapper.Map<NoteRecord>(param));
+                var addRes = await _recordRepository.InsertAsync(param.Adapt<NoteRecord>());
                 if (addRes != null)
                 {
                     result.Code = ResponseCodeEnum.Success;
-                    result.Data = _mapper.Map<NoteRecordDto>(addRes);
+                    result.Data = addRes.Adapt<NoteRecordDto>();
                     result.Msg = "添加成功";
                 }
                 else
@@ -216,12 +214,12 @@ namespace Gromi.Application.CraftHub.MemoModule
                     return result;
                 }
 
-                var addRes = await _tagRepository.InsertAsync(_mapper.Map<NoteTag>(tag));
+                var addRes = await _tagRepository.InsertAsync(tag.Adapt<NoteTag>());
                 if (addRes != null)
                 {
                     result.Code = ResponseCodeEnum.Success;
                     result.Msg = $"标签添加成功";
-                    result.Data = _mapper.Map<NoteTagDto>(addRes);
+                    result.Data = addRes.Adapt<NoteTagDto>();
                 }
                 else
                 {
@@ -293,7 +291,7 @@ namespace Gromi.Application.CraftHub.MemoModule
                 var queryRes = await _tagRepository.GetAllAsync();
                 if (queryRes != null)
                 {
-                    result.Data = _mapper.Map<IEnumerable<NoteTagDto>>(queryRes).ToList();
+                    result.Data = queryRes.Adapt<IEnumerable<NoteTagDto>>().ToList();
                     result.Code = ResponseCodeEnum.Success;
                     result.Msg = "查询成功";
                 }

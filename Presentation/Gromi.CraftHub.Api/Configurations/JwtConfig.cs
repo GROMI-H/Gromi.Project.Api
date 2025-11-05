@@ -59,7 +59,7 @@ namespace Gromi.CraftHub.Api.Configurations
                 };
             });
 
-            services.AddSingleton<IAuthorizationHandler, PolicyHandler>();
+            services.AddScoped<IAuthorizationHandler, PolicyHandler>();
         }
     }
 }

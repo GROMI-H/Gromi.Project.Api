@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Gromi.Application.Common.AuthModule;
+﻿using Gromi.Application.Common.AuthModule;
 using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
 using Gromi.Infra.DataAccess.Shared;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
@@ -8,9 +7,9 @@ using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
 using Gromi.Infra.Entity.Common.LoginModule.Dtos;
 using Gromi.Infra.Entity.Common.LoginModule.Params;
-using Gromi.Infra.Entity.Common.SystemModule.Dtos;
 using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.Common.SystemModule;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gromi.Application.Common.LoginModule
@@ -46,14 +45,12 @@ namespace Gromi.Application.Common.LoginModule
     [AutoInject(ServiceLifetime.Scoped)]
     public class LoginService : ILoginService
     {
-        private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepository;
         private readonly RedisServer<string> _redisServer;
 
-        public LoginService(IMapper mapperr, IJwtService jwtService, IUserRepository userRepository, RedisServer<string> redisServer)
+        public LoginService(IJwtService jwtService, IUserRepository userRepository, RedisServer<string> redisServer)
         {
-            _mapper = mapperr;
             _jwtService = jwtService;
             _userRepository = userRepository;
             _redisServer = redisServer;
@@ -64,7 +61,7 @@ namespace Gromi.Application.Common.LoginModule
             try
             {
                 BaseResult result = new BaseResult();
-                var addRes = await _userRepository.InsertAsync(_mapper.Map<UserInfo>(param));
+                var addRes = await _userRepository.InsertAsync(param.Adapt<UserInfo>());
 
                 result.Code = addRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Msg = addRes != null ? "注册成功" : "注册失败";
@@ -121,7 +118,7 @@ namespace Gromi.Application.Common.LoginModule
                 if (verifyRes != -1)
                 {
                     var userInfo = await _userRepository.GetModelAsync(verifyRes);
-                    var tokenDto = await _jwtService.CreateToken(_mapper.Map<UserInfoDto>(userInfo));
+                    var tokenDto = await _jwtService.CreateToken(userInfo);
                     if (tokenDto == null || tokenDto.Data == null)
                     {
                         result.Code = ResponseCodeEnum.InternalError;
@@ -129,7 +126,7 @@ namespace Gromi.Application.Common.LoginModule
                         return result;
                     }
 
-                    result.Data = _mapper.Map<LoginResponse>(userInfo);
+                    result.Data = userInfo.Adapt<LoginResponse>();
                     result.Data.Token = tokenDto.Data.Token;
                     result.Msg = "登录成功";
                     return result;

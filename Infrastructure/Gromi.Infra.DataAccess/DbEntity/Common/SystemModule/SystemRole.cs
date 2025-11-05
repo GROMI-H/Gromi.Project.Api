@@ -46,25 +46,22 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         /// <summary>
         /// 角色用户关联集合
         /// </summary>
-        [Navigate("RoleId")]
-        public List<UsersRoles> UsersRoles { get; set; }
+        public virtual ICollection<UsersRoles> UsersRoles { get; set; } = new List<UsersRoles>();
 
         /// <summary>
         /// User集合
         /// </summary>
-        [Navigate("RoleId")]
-        public List<UserInfo> Users => UsersRoles?.Select(ur => ur.User).ToList();
+        public virtual ICollection<UserInfo> Users => UsersRoles?.Select(ur => ur.User).ToList();
 
         /// <summary>
         /// 角色接口关联集合
         /// </summary>
-        [Navigate("RoleId")]
-        public List<RolesApis> RolesApis { get; set; }
+        public List<RolesApis> RolesApis { get; set; } = new List<RolesApis>();
 
         /// <summary>
         /// 接口集合
         /// </summary>
-        public List<ApiRoute> Apis => RolesApis?.Select(ra => ra.Api).ToList();
+        public virtual ICollection<ApiRoute> Apis => RolesApis?.Select(ra => ra.Api).ToList();
 
         #endregion 关联
     }

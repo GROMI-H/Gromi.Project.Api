@@ -50,13 +50,11 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         /// <summary>
         /// 角色接口关联集合
         /// </summary>
-        [Navigate("ApiId")]
-        public List<RolesApis> RolesApis { get; set; }
+        public virtual ICollection<RolesApis> RolesApis { get; set; }
 
         /// <summary>
         /// 接口集合
         /// </summary>
-        [Navigate("ApiId")]
-        public List<SystemRole> Roles => RolesApis?.Select(ra => ra.Role).ToList();
+        public virtual ICollection<SystemRole> Roles => RolesApis?.Select(ra => ra.Role).ToList();
     }
 }

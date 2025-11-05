@@ -1,4 +1,5 @@
 ﻿using Gromi.Application.Common.LoginModule;
+using Gromi.CraftHub.Api.Filter;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.LoginModule.Params;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,8 @@ namespace Gromi.CraftHub.Api.Controllers.LoginModule
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Filter.LoggingActionFilter]
+    [LoggingActionFilter]
+    [TypeFilter(typeof(EncryptFilter))]
     public class LoginController : ControllerBase
     {
         private readonly ILoginService _loginService;

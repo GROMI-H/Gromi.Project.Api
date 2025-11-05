@@ -55,17 +55,6 @@ namespace Gromi.CraftHub.Api.Configurations
                         }
                     });
                 });
-
-                // 注册 Profile
-                List<Type> profiles = assemblies.Where(d => d.FullName != null && d.FullName.Split(",")[0].EndsWith(".AutoMapper"))
-                    .SelectMany(x => x.GetTypes())
-                    .Where(t => t.IsClass && !t.IsAbstract && t.GetCustomAttributes(typeof(AutoInjectAttribute), false).Length > 0)
-                    .Where(t => injectKeys.Contains(t.GetCustomAttribute<AutoInjectAttribute>()?.Key))
-                    .ToList();
-                profiles.ForEach(profile =>
-                {
-                    services.AddAutoMapper(cfg => cfg.AddProfile(profile));
-                });
             }
         }
     }

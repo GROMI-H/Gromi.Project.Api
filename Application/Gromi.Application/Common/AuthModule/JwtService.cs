@@ -1,7 +1,7 @@
-﻿using Gromi.Infra.Entity.Common.BaseModule.Attributes;
+﻿using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
-using Gromi.Infra.Entity.Common.SystemModule.Dtos;
 using Gromi.Infra.Entity.CraftHub.AuthModule.Dtos;
 using Gromi.Infra.Utils.Helpers;
 using Microsoft.AspNetCore.Authentication;
@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -25,7 +26,7 @@ namespace Gromi.Application.Common.AuthModule
         /// 创建Token
         /// </summary>
         /// <returns></returns>
-        Task<BaseResult<JwtAuthorizationDto>> CreateToken(UserInfoDto userInfo);
+        Task<BaseResult<JwtAuthorizationDto>> CreateToken(UserInfo userInfo);
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ namespace Gromi.Application.Common.AuthModule
 
         #endregion 初始化
 
-        public async Task<BaseResult<JwtAuthorizationDto>> CreateToken(UserInfoDto userInfo)
+        public async Task<BaseResult<JwtAuthorizationDto>> CreateToken(UserInfo userInfo)
         {
             try
             {
@@ -73,8 +74,8 @@ namespace Gromi.Application.Common.AuthModule
                 // 完善用户信息
                 IEnumerable<Claim> claims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Name, userInfo.Name),
-                    new Claim(ClaimTypes.Role, "SuperAdmin"),
+                    new Claim(ClaimTypes.Name, userInfo.Id.ToString()),
+                    new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(userInfo.Roles)),
                     new Claim(ClaimTypes.Expiration, expireAt.ToString())
                 };
 

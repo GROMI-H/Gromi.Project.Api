@@ -18,6 +18,13 @@ namespace Gromi.Repository.Common.SystemModule
         /// <param name="password"></param>
         /// <returns></returns>
         Task<long> VerifyPassword(string account, string password);
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<UserInfo> GetUserInfoAsync(long id);
     }
 
     /// <summary>
@@ -28,6 +35,15 @@ namespace Gromi.Repository.Common.SystemModule
     {
         public UserRepository(IMultiFreeSqlManager<DbKey> multiFreeSql) : base(multiFreeSql, DbKey.DbCraftHub)
         {
+        }
+
+        public async Task<UserInfo> GetUserInfoAsync(long id)
+        {
+            var userInfo = await _fsql.Select<UserInfo>()
+                .Where(u => u.Id == id)
+                .Include(u => u.UsersRoles)
+                .FirstAsync();
+            return userInfo;
         }
 
         public async Task<long> VerifyPassword(string account, string password)

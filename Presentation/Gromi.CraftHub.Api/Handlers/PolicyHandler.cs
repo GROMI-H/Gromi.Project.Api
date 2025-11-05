@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Gromi.Application.Common.SystemModule;
+using Gromi.Infra.Entity.Common.BaseModule.Enums;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace Gromi.CraftHub.Api.Handler
@@ -9,6 +12,9 @@ namespace Gromi.CraftHub.Api.Handler
     /// </summary>
     public class PolicyHandler : AuthorizationHandler<PolicyRequirement>
     {
+        private readonly bool IsDebug = false;
+        private readonly IRoleService _roleService;
+
         /// <summary>
         /// 授权方式(cookie,bearer,oauth,openid)
         /// </summary>
@@ -21,9 +27,12 @@ namespace Gromi.CraftHub.Api.Handler
         /// </summary>
         /// <param name="schemes"></param>
         /// <param name="httpContextAccessor"></param>
-        public PolicyHandler(IAuthenticationSchemeProvider schemes, IHttpContextAccessor httpContextAccessor)
+        /// <param name="roleService"></param>
+        public PolicyHandler(IAuthenticationSchemeProvider schemes, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IConfiguration configuration)
         {
             Schemes = schemes;
+            IsDebug = Convert.ToBoolean(configuration["IsDebug"] ?? "false");
+            _roleService = roleService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -34,30 +43,45 @@ namespace Gromi.CraftHub.Api.Handler
         /// <param name="requirement"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PolicyRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PolicyRequirement requirement)
         {
             if (context.User == null || context.User.Identity == null || !context.User.Identity.IsAuthenticated || _httpContextAccessor.HttpContext == null)
             {
                 context.Fail();
-                return Task.CompletedTask;
+                return;
             }
 
-            // TODO 校验逻辑待优化
+            if (!IsDebug)
+            {
+                // 获取角色信息
+                var role = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value.ToString();
+                if (string.IsNullOrEmpty(role))
+                {
+                    context.Fail();
+                    return;
+                }
+                var roleIds = JsonConvert.DeserializeObject<IEnumerable<long>>(role);
+                if (roleIds == null)
+                {
+                    context.Fail();
+                    return;
+                }
+                // 判断当前路由在不在对应的路由之中
+                var verifyRes = await _roleService.VerifyUrl(roleIds.ToList(), _httpContextAccessor.HttpContext.Request.Path.Value);
+                if (verifyRes.Code == ResponseCodeEnum.Success)
+                {
+                    context.Succeed(requirement);
+                    return;
+                }
 
-            // 获取角色信息
-            var role = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value.ToString();
-            if (role == "SuperAdmin")
+                context.Fail();
+                return;
+            }
+            else
             {
                 context.Succeed(requirement);
-                return Task.CompletedTask;
+                return;
             }
-
-            // 获取角色对应的路由信息
-
-            // 判断当前路由在不在对应的路由之中
-            var url = _httpContextAccessor.HttpContext.Request.Path.Value;
-
-            return Task.CompletedTask;
         }
     }
 

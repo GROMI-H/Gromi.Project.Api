@@ -8,6 +8,11 @@ namespace Gromi.Infra.Entity.Common.LoginModule.Dtos
     public class LoginResponse : BaseParam
     {
         /// <summary>
+        /// JwtToken
+        /// </summary>
+        public string Token { get; set; } = string.Empty;
+
+        /// <summary>
         /// 账号
         /// </summary>
         public string Account { get; set; }

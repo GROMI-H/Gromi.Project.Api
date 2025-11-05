@@ -18,12 +18,12 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule.Relations
         /// 导航属性 User
         /// </summary>
         [Navigate(nameof(UserId))]
-        public UserInfo User { get; set; }
+        public virtual UserInfo User { get; set; }
 
         /// <summary>
         /// 导航属性 Role
         /// </summary>
         [Navigate(nameof(RoleId))]
-        public SystemRole Role { get; set; }
+        public virtual SystemRole Role { get; set; }
     }
 }
