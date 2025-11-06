@@ -1,4 +1,5 @@
 ﻿using Gromi.Application.Common.SystemModule;
+using Gromi.CraftHub.Api.Filter;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,8 @@ namespace Gromi.CraftHub.Api.Controllers.SystemModule
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Policy = "Permission")]
-    [Filter.LoggingActionFilter]
+    [LoggingActionFilter]
+    [TypeFilter(typeof(EncryptFilter))]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;

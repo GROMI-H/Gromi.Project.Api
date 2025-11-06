@@ -58,9 +58,17 @@ namespace Gromi.Application.Common.LoginModule
 
         public async Task<BaseResult> Register(RegisterParam param)
         {
+            BaseResult result = new BaseResult() { Code = ResponseCodeEnum.InternalError };
+
             try
             {
-                BaseResult result = new BaseResult();
+                if (string.IsNullOrEmpty(param.Name) || string.IsNullOrEmpty(param.Account) || string.IsNullOrEmpty(param.Password))
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Msg = "注册失败，参数有误";
+                    return result;
+                }
+
                 var addRes = await _userRepository.InsertAsync(param.Adapt<UserInfo>());
 
                 result.Code = addRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
@@ -70,8 +78,17 @@ namespace Gromi.Application.Common.LoginModule
             }
             catch (Exception ex)
             {
-                LogHelper.Error($"注册失败：{ex.Message}");
-                return await Task.FromResult(new BaseResult(ResponseCodeEnum.Fail, "注册失败"));
+                if (ex.Message.Contains("UNIQUE constraint failed"))
+                {
+                    result.Code = ResponseCodeEnum.Fail;
+                    result.Msg = $"注册失败，当前账号已存在";
+                }
+                else
+                {
+                    result.Msg = $"注册失败,{ex.Message}";
+                }
+                LogHelper.Error(result.Msg);
+                return await Task.FromResult(result);
             }
         }
 
@@ -102,6 +119,13 @@ namespace Gromi.Application.Common.LoginModule
             try
             {
                 BaseResult<LoginResponse> result = new BaseResult<LoginResponse>();
+
+                if (string.IsNullOrEmpty(loginParam.Account) || string.IsNullOrEmpty(loginParam.Password))
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Msg = "账号或密码不能为空";
+                    return result;
+                }
 
                 long verifyRes = -1;
                 var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);

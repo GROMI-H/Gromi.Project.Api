@@ -51,7 +51,7 @@ namespace Gromi.Template.Wpf.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string propertyName)
         {
@@ -89,7 +89,7 @@ namespace Gromi.Template.Wpf.ViewModels
 
         private bool CanExecuteSubClickCommand()
         {
-            return false;
+            return true;
         }
 
         #endregion Sub

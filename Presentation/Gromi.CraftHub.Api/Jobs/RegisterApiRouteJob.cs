@@ -64,7 +64,7 @@ namespace Gromi.CraftHub.Api.Jobs
                         {
                             case HttpGetAttribute getAttr:
                                 template = getAttr.Template ?? "";
-                                routeType = RouteTypeEnum.GET;
+                                routeType |= RouteTypeEnum.GET;
                                 break;
 
                             case HttpPostAttribute postAttr:
@@ -88,8 +88,9 @@ namespace Gromi.CraftHub.Api.Jobs
                                 break;
                         }
 
-                        var summary = method.GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), true)
-                        .FirstOrDefault() as System.ComponentModel.DescriptionAttribute;
+                        var summary = method
+                            .GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), true)
+                            .FirstOrDefault() as System.ComponentModel.DescriptionAttribute;
 
                         apiRoutes.Add(new ApiRouteDto()
                         {

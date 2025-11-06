@@ -40,7 +40,7 @@ namespace Gromi.Application.Common.AuthModule
         private readonly string JwtIssuer = string.Empty;
         private readonly string JwtAudience = string.Empty;
         private readonly string JwtSecurityKey = string.Empty;
-        private readonly string JwtExpireMinutes = string.Empty;
+        private readonly string JwtExpireHours = string.Empty;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public JwtService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
@@ -48,7 +48,7 @@ namespace Gromi.Application.Common.AuthModule
             JwtIssuer = configuration["Jwt:Issuer"] ?? string.Empty;
             JwtAudience = configuration["Jwt:Audience"] ?? string.Empty;
             JwtSecurityKey = configuration["Jwt:SecurityKey"] ?? string.Empty;
-            JwtExpireMinutes = configuration["Jwt:ExpireMinutes"] ?? "20";
+            JwtExpireHours = configuration["Jwt:ExpireHours"] ?? "24";
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -66,7 +66,7 @@ namespace Gromi.Application.Common.AuthModule
                 SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSecurityKey));
 
                 DateTime authTime = DateTime.UtcNow;
-                DateTime expireAt = authTime.AddMinutes(Convert.ToDouble(JwtExpireMinutes));
+                DateTime expireAt = authTime.AddHours(Convert.ToDouble(JwtExpireHours));
 
                 // 将用户信息添加到 Claim 中
                 var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
@@ -74,7 +74,7 @@ namespace Gromi.Application.Common.AuthModule
                 // 完善用户信息
                 IEnumerable<Claim> claims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Name, userInfo.Id.ToString()),
+                    new Claim(ClaimTypes.Name, userInfo.Name),
                     new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(userInfo.Roles)),
                     new Claim(ClaimTypes.Expiration, expireAt.ToString())
                 };

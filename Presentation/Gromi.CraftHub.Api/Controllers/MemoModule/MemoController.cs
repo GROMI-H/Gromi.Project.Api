@@ -1,4 +1,5 @@
 ﻿using Gromi.Application.CraftHub.MemoModule;
+using Gromi.CraftHub.Api.Filter;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Params;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;
@@ -14,7 +15,8 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Policy = "Permission")]
-    [Filter.LoggingActionFilter]
+    [LoggingActionFilter]
+    [TypeFilter(typeof(EncryptFilter))]
     public class MemoController : ControllerBase
     {
         private readonly INoteService _noteService;
