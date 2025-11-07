@@ -1,6 +1,7 @@
 ﻿using Gromi.Application.Common.LoginModule;
 using Gromi.CraftHub.Api.Filter;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using Gromi.Infra.Entity.Common.LoginModule.Dtos;
 using Gromi.Infra.Entity.Common.LoginModule.Params;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -62,7 +63,7 @@ namespace Gromi.CraftHub.Api.Controllers.LoginModule
         [Description("用户登录")]
         public async Task<IActionResult> Login([FromBody] LoginParam param)
         {
-            BaseResult res = await _loginService.Login(param);
+            BaseResult<LoginResponse> res = await _loginService.Login(param);
             return Ok(res);
         }
     }
