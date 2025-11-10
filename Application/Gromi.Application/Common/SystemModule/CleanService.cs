@@ -36,12 +36,12 @@ namespace Gromi.Application.Common.SystemModule
                 await _apiRouteRepository.ClearSoftDelAsync();
 
                 result.Code = ResponseCodeEnum.Success;
-                result.Msg = "清理成功";
+                result.Message = "清理成功";
             }
             catch (Exception ex)
             {
-                result.Msg = $"清理中断：{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"清理中断：{ex.Message}";
+                LogHelper.Error(result.Message);
             }
             return result;
         }

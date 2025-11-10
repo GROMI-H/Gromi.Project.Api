@@ -32,7 +32,7 @@ namespace Gromi.CraftHub.Api.Jobs
             var cleanRes = await _cleanService.ClearSoftDelete();
             if (cleanRes.Code != ResponseCodeEnum.Success)
             {
-                LogHelper.Error(cleanRes.Msg);
+                LogHelper.Error(cleanRes.Message);
             }
         }
     }

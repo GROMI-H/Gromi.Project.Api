@@ -82,19 +82,19 @@ namespace Gromi.Application.Common.SystemModule
                 {
                     result.Code = ResponseCodeEnum.Success;
                     result.Data = addRes.Adapt<SystemRoleDto>();
-                    result.Msg = "角色添加成功";
+                    result.Message = "角色添加成功";
                 }
                 else
                 {
                     result.Code = ResponseCodeEnum.Fail;
-                    result.Msg = "角色添加失败";
+                    result.Message = "角色添加失败";
                 }
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"角色添加失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"角色添加失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -110,7 +110,7 @@ namespace Gromi.Application.Common.SystemModule
                 if (param.RoleId == 0 || !param.ApiIds.Any())
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "绑定失败，参数有误";
+                    result.Message = "绑定失败，参数有误";
                     return result;
                 }
 
@@ -121,13 +121,13 @@ namespace Gromi.Application.Common.SystemModule
                 }
                 await _routesApisRepository.InsertRolesApisAsync(roleApi);
                 result.Code = ResponseCodeEnum.Success;
-                result.Msg = "绑定成功";
+                result.Message = "绑定成功";
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"绑定失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"绑定失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -143,7 +143,7 @@ namespace Gromi.Application.Common.SystemModule
                 if (param.RoleId == 0 || !param.ApiIds.Any())
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "解绑失败，参数有误";
+                    result.Message = "解绑失败，参数有误";
                     return result;
                 }
 
@@ -154,13 +154,13 @@ namespace Gromi.Application.Common.SystemModule
                 }
                 await _routesApisRepository.DeleteRolesApisAsync(roleApi);
                 result.Code = ResponseCodeEnum.Success;
-                result.Msg = "解绑成功";
+                result.Message = "解绑成功";
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"解绑失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"解绑失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -181,19 +181,19 @@ namespace Gromi.Application.Common.SystemModule
                 if (!roleIds.Any() || string.IsNullOrEmpty(url))
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "校验失败，参数有误";
+                    result.Message = "校验失败，参数有误";
                     return result;
                 }
 
                 var verifyRes = await _routesApisRepository.VerifyUrlAsync(roleIds, url);
                 result.Code = verifyRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
-                result.Msg = verifyRes ? "校验成功" : "校验失败";
+                result.Message = verifyRes ? "校验成功" : "校验失败";
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"解绑失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"解绑失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }

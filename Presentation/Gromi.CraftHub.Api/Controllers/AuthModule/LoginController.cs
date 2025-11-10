@@ -36,7 +36,7 @@ namespace Gromi.CraftHub.Api.Controllers.AuthModule
         [Description("获取验证码图片")]
         public async Task<IActionResult> Captcha()
         {
-            BaseResult<byte[]> res = await _loginService.GetCaptcha();
+            BaseResult<string> res = await _loginService.GetCaptcha();
             return Ok(res);
         }
 

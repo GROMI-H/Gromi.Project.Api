@@ -9,7 +9,7 @@ namespace Gromi.Infra.Entity.Common.BaseModule.Dtos
     {
         public ResponseCodeEnum Code { get; set; }
 
-        public string Msg { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
 
         public BaseResult()
         {
@@ -19,7 +19,7 @@ namespace Gromi.Infra.Entity.Common.BaseModule.Dtos
         public BaseResult(ResponseCodeEnum code, string msg)
         {
             Code = code;
-            Msg = msg;
+            Message = msg;
         }
     }
 
@@ -46,7 +46,7 @@ namespace Gromi.Infra.Entity.Common.BaseModule.Dtos
         {
             Code = code;
             Data = data;
-            Msg = msg;
+            Message = msg;
         }
     }
 }

@@ -10,6 +10,7 @@ using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.Common.SystemModule;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Gromi.Application.Common.AuthModule
 {
@@ -29,7 +30,7 @@ namespace Gromi.Application.Common.AuthModule
         /// 获取验证码
         /// </summary>
         /// <returns></returns>
-        Task<BaseResult<byte[]>> GetCaptcha();
+        Task<BaseResult<string>> GetCaptcha();
 
         /// <summary>
         /// 用户登录
@@ -64,7 +65,7 @@ namespace Gromi.Application.Common.AuthModule
                 if (string.IsNullOrEmpty(param.Name) || string.IsNullOrEmpty(param.Account) || string.IsNullOrEmpty(param.Password))
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "注册失败，参数有误";
+                    result.Message = "注册失败，参数有误";
                     return result;
                 }
 
@@ -73,7 +74,7 @@ namespace Gromi.Application.Common.AuthModule
                 var addRes = await _userRepository.InsertAsync(param.Adapt<UserInfo>());
 
                 result.Code = addRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
-                result.Msg = addRes != null ? "注册成功" : "注册失败";
+                result.Message = addRes != null ? "注册成功" : "注册失败";
 
                 return result;
             }
@@ -82,36 +83,36 @@ namespace Gromi.Application.Common.AuthModule
                 if (ex.Message.Contains("UNIQUE constraint failed"))
                 {
                     result.Code = ResponseCodeEnum.Fail;
-                    result.Msg = $"注册失败，当前账号已存在";
+                    result.Message = $"注册失败，当前账号已存在";
                 }
                 else
                 {
-                    result.Msg = $"注册失败,{ex.Message}";
+                    result.Message = $"注册失败,{ex.Message}";
                 }
-                LogHelper.Error(result.Msg);
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
 
-        public async Task<BaseResult<byte[]>> GetCaptcha()
+        public async Task<BaseResult<string>> GetCaptcha()
         {
             try
             {
-                BaseResult<byte[]> result = new BaseResult<byte[]>();
+                BaseResult<string> result = new BaseResult<string>();
 
                 var captchaData = CaptchaHelper.GenerateCaptcha();
 
                 SessionHelper.SetSession(CommonConstant.CaptchaKey, captchaData.Code);
 
                 result.Code = ResponseCodeEnum.Success;
-                result.Data = captchaData.Image;
+                result.Data = $"data:image/png;base64,{Convert.ToBase64String(captchaData.Image)}";
 
                 return result;
             }
             catch (Exception ex)
             {
                 LogHelper.Error($"获取验证码图片失败:{ex.Message}");
-                return await Task.FromResult(new BaseResult<byte[]>(ResponseCodeEnum.InternalError, ex.Message));
+                return await Task.FromResult(new BaseResult<string>(ResponseCodeEnum.InternalError, ex.Message));
             }
         }
 
@@ -119,29 +120,31 @@ namespace Gromi.Application.Common.AuthModule
         {
             try
             {
-                BaseResult<LoginResponse> result = new BaseResult<LoginResponse>();
+                BaseResult<LoginResponse> result = new BaseResult<LoginResponse>()
+                {
+                    Data = new LoginResponse()
+                };
 
                 if (string.IsNullOrEmpty(loginParam.Account) || string.IsNullOrEmpty(loginParam.Password))
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "账号或密码不能为空";
+                    result.Message = "账号或密码不能为空";
                     return result;
                 }
 
                 long verifyRes = -1;
-                // 适配前端登录：如果设计出图片验证就使用图片验证，反之则先使用滑动验证
-                //var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);
-                //if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
-                //{
-                //    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, loginParam.Password);
-                //}
-                //else
-                //{
-                //    result.Code = ResponseCodeEnum.InvalidParameter;
-                //    result.Msg = "验证码错误,请重试";
-                //    return result;
-                //}
-                verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptHelper.Md5(loginParam.Password));
+                var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);
+                SessionHelper.RemoveSession(CommonConstant.CaptchaKey); // 获取后就删除指定Key
+                if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
+                {   
+                    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptHelper.Md5(loginParam.Password));
+                }
+                else
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Message = "验证码错误,请重试";
+                    return result;
+                }
                 if (verifyRes != -1)
                 {
                     var userInfo = await _userRepository.GetModelAsync(verifyRes);
@@ -149,19 +152,19 @@ namespace Gromi.Application.Common.AuthModule
                     if (tokenDto == null || tokenDto.Data == null)
                     {
                         result.Code = ResponseCodeEnum.InternalError;
-                        result.Msg = $"登录失败：创建Token失败";
+                        result.Message = $"登录失败：创建Token失败";
                         return result;
                     }
 
                     result.Data = userInfo.Adapt<LoginResponse>();
                     result.Data.Token = tokenDto.Data.Token;
-                    result.Msg = "登录成功";
+                    result.Message = "登录成功";
                     return result;
                 }
                 else
                 {
                     result.Code = ResponseCodeEnum.Fail;
-                    result.Msg = "密码校验失败";
+                    result.Message = "密码校验失败";
                 }
 
                 return result;
@@ -169,7 +172,7 @@ namespace Gromi.Application.Common.AuthModule
             catch (Exception ex)
             {
                 LogHelper.Error($"登录失败:{ex.Message}");
-                return await Task.FromResult(new BaseResult<LoginResponse>(ResponseCodeEnum.InternalError, ex.Message));
+                return await Task.FromResult(new BaseResult<LoginResponse>(ResponseCodeEnum.InternalError, ex.Message, new LoginResponse()));
             }
         }
     }

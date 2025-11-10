@@ -47,20 +47,20 @@ namespace Gromi.Application.Common.SystemModule
                 if (param == null || !param.Any())
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "更新失败,数据为空";
+                    result.Message = "更新失败,数据为空";
                     return result;
                 }
 
                 await _apiRouteRepository.UpsertApiRouteAsync(param.Adapt<IEnumerable<ApiRoute>>());
                 result.Code = ResponseCodeEnum.Success;
-                result.Msg = "更新成功";
+                result.Message = "更新成功";
 
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"接口路由更新失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"接口路由更新失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }

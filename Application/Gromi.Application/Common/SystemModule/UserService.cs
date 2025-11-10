@@ -70,7 +70,7 @@ namespace Gromi.Application.Common.SystemModule
                 if (param.UserId == 0 || !param.RoleIds.Any())
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "绑定失败，参数有误";
+                    result.Message = "绑定失败，参数有误";
                     return result;
                 }
 
@@ -81,13 +81,13 @@ namespace Gromi.Application.Common.SystemModule
                 }
                 await _usersRolesRepository.InsertUsersRolesAsync(userRole);
                 result.Code = ResponseCodeEnum.Success;
-                result.Msg = "绑定成功";
+                result.Message = "绑定成功";
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"绑定失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"绑定失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -103,7 +103,7 @@ namespace Gromi.Application.Common.SystemModule
                 if (param.UserId == 0 || !param.RoleIds.Any())
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "解绑失败，参数有误";
+                    result.Message = "解绑失败，参数有误";
                     return result;
                 }
 
@@ -114,13 +114,13 @@ namespace Gromi.Application.Common.SystemModule
                 }
                 await _usersRolesRepository.DeleteUsersRolesAsync(userRole);
                 result.Code = ResponseCodeEnum.Success;
-                result.Msg = "解绑成功";
+                result.Message = "解绑成功";
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"解绑失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"解绑失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -136,17 +136,17 @@ namespace Gromi.Application.Common.SystemModule
                 if (param.Id == null)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "重置失败，参数有误";
+                    result.Message = "重置失败，参数有误";
                     return result;
                 }
                 var resetRes = await _userRepository.ResetPassword(param.Id.Value, EncryptHelper.Md5("123456"));
                 result.Code = resetRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
-                result.Msg = resetRes ? "重置成功" : "重置失败";
+                result.Message = resetRes ? "重置成功" : "重置失败";
             }
             catch (Exception ex)
             {
-                result.Msg = $"重置失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"重置失败:{ex.Message}";
+                LogHelper.Error(result.Message);
             }
             return result;
         }
@@ -159,12 +159,12 @@ namespace Gromi.Application.Common.SystemModule
             {
                 var updateRes = await _userRepository.UpdateAsync(param.Adapt<UserInfo>());
                 result.Code = updateRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
-                result.Msg = updateRes ? "更新成功" : "更新失败";
+                result.Message = updateRes ? "更新成功" : "更新失败";
             }
             catch (Exception ex)
             {
-                result.Msg = $"更新失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"更新失败:{ex.Message}";
+                LogHelper.Error(result.Message);
             }
 
             return result;

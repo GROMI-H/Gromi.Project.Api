@@ -98,20 +98,20 @@ namespace Gromi.Application.CraftHub.MemoModule
                 {
                     result.Data = queryRes.Adapt<IEnumerable<NoteRecordDto>>().ToList();
                     result.Code = ResponseCodeEnum.Success;
-                    result.Msg = "查询成功";
+                    result.Message = "查询成功";
                 }
                 else
                 {
                     result.Code = ResponseCodeEnum.Fail;
-                    result.Msg = "查询失败";
+                    result.Message = "查询失败";
                 }
 
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"获取笔记列表失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"获取笔记列表失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -128,7 +128,7 @@ namespace Gromi.Application.CraftHub.MemoModule
                 if (param.Id == null || param.Ids == null || param.Ids.Count > 0)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = $"删除失败：参数不合法";
+                    result.Message = $"删除失败：参数不合法";
                     return result;
                 }
 
@@ -139,7 +139,7 @@ namespace Gromi.Application.CraftHub.MemoModule
 
                 var delRes = await _recordRepository.DeleteNoteRecordAsync(param.Ids);
 
-                (result.Code, result.Msg) = delRes switch
+                (result.Code, result.Message) = delRes switch
                 {
                     OperationResEnum.Success => (ResponseCodeEnum.Success, "删除成功"),
                     OperationResEnum.Fail => (ResponseCodeEnum.Fail, "删除失败"),
@@ -151,8 +151,8 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
             catch (Exception ex)
             {
-                result.Msg = $"删除失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"删除失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -163,14 +163,14 @@ namespace Gromi.Application.CraftHub.MemoModule
             {
                 Code = ResponseCodeEnum.InternalError,
                 Data = param,
-                Msg = "添加失败"
+                Message = "添加失败"
             };
             try
             {
                 if (param.UserId == 0 || param.TagId == 0)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "添加失败，参数异常";
+                    result.Message = "添加失败，参数异常";
                     return result;
                 }
                 var addRes = await _recordRepository.InsertAsync(param.Adapt<NoteRecord>());
@@ -178,7 +178,7 @@ namespace Gromi.Application.CraftHub.MemoModule
                 {
                     result.Code = ResponseCodeEnum.Success;
                     result.Data = addRes.Adapt<NoteRecordDto>();
-                    result.Msg = "添加成功";
+                    result.Message = "添加成功";
                 }
                 else
                 {
@@ -188,8 +188,8 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
             catch (Exception ex)
             {
-                result.Msg = $"笔记添加失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"笔记添加失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -210,7 +210,7 @@ namespace Gromi.Application.CraftHub.MemoModule
                 if (tag.UserId == 0)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "添加失败，参数异常";
+                    result.Message = "添加失败，参数异常";
                     return result;
                 }
 
@@ -218,20 +218,20 @@ namespace Gromi.Application.CraftHub.MemoModule
                 if (addRes != null)
                 {
                     result.Code = ResponseCodeEnum.Success;
-                    result.Msg = $"标签添加成功";
+                    result.Message = $"标签添加成功";
                     result.Data = addRes.Adapt<NoteTagDto>();
                 }
                 else
                 {
                     result.Code = ResponseCodeEnum.Fail;
-                    result.Msg = $"标签添加失败";
+                    result.Message = $"标签添加失败";
                 }
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"添加笔记标签失败：{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"添加笔记标签失败：{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -241,7 +241,7 @@ namespace Gromi.Application.CraftHub.MemoModule
             BaseResult result = new BaseResult
             {
                 Code = ResponseCodeEnum.InternalError,
-                Msg = "删除失败"
+                Message = "删除失败"
             };
 
             try
@@ -249,7 +249,7 @@ namespace Gromi.Application.CraftHub.MemoModule
                 if (param.Id == null || param.Ids == null || param.Ids.Count > 0)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = $"删除失败：参数不合法";
+                    result.Message = $"删除失败：参数不合法";
                     return result;
                 }
 
@@ -260,7 +260,7 @@ namespace Gromi.Application.CraftHub.MemoModule
 
                 var delRes = await _tagRepository.DeleteNoteTagAsync(param.Ids);
 
-                (result.Code, result.Msg) = delRes switch
+                (result.Code, result.Message) = delRes switch
                 {
                     OperationResEnum.Success => (ResponseCodeEnum.Success, "删除成功"),
                     OperationResEnum.Fail => (ResponseCodeEnum.Fail, "删除失败"),
@@ -272,8 +272,8 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
             catch (Exception ex)
             {
-                result.Msg = $"删除失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"删除失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
@@ -293,18 +293,18 @@ namespace Gromi.Application.CraftHub.MemoModule
                 {
                     result.Data = queryRes.Adapt<IEnumerable<NoteTagDto>>().ToList();
                     result.Code = ResponseCodeEnum.Success;
-                    result.Msg = "查询成功";
+                    result.Message = "查询成功";
                 }
                 else
                 {
-                    result.Msg = "查询失败";
+                    result.Message = "查询失败";
                 }
                 return result;
             }
             catch (Exception ex)
             {
-                result.Msg = $"查询失败:{ex.Message}";
-                LogHelper.Error(result.Msg);
+                result.Message = $"查询失败:{ex.Message}";
+                LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
         }
