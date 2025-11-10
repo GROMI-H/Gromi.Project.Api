@@ -1,4 +1,4 @@
-﻿using Gromi.CraftHub.Api.Handler;
+﻿using Gromi.CraftHub.Api.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;

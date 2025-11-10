@@ -17,6 +17,12 @@ namespace Gromi.Repository.Common.SystemModule
         /// <param name="apiRoutes"></param>
         /// <returns></returns>
         Task<bool> UpsertApiRouteAsync(IEnumerable<ApiRoute> apiRoutes);
+
+        /// <summary>
+        /// 清理软删除
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> ClearSoftDelAsync();
     }
 
     /// <summary>
@@ -67,6 +73,15 @@ namespace Gromi.Repository.Common.SystemModule
                     throw new Exception($"ApiRoute更新失败：{ex.Message}");
                 }
             }
+        }
+
+        public async Task<bool> ClearSoftDelAsync()
+        {
+            // TODO "冷静"天数采用配置
+            var res = await _fsql.Delete<ApiRoute>()
+                .Where(api => api.IsDeleted == DeleteEnum.Deleted && (DateTime.Now - api.UpdateTime).TotalDays > 15)
+                .ExecuteAffrowsAsync();
+            return res > 0;
         }
     }
 }

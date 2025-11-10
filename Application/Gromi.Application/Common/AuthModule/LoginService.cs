@@ -1,18 +1,17 @@
-﻿using Gromi.Application.Common.AuthModule;
-using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+﻿using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
 using Gromi.Infra.DataAccess.Shared;
+using Gromi.Infra.Entity.Common.AuthModule.Dtos;
+using Gromi.Infra.Entity.Common.AuthModule.Params;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Constant;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
-using Gromi.Infra.Entity.Common.LoginModule.Dtos;
-using Gromi.Infra.Entity.Common.LoginModule.Params;
 using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.Common.SystemModule;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Gromi.Application.Common.LoginModule
+namespace Gromi.Application.Common.AuthModule
 {
     /// <summary>
     /// 登录服务接口
@@ -68,6 +67,8 @@ namespace Gromi.Application.Common.LoginModule
                     result.Msg = "注册失败，参数有误";
                     return result;
                 }
+
+                param.Password = EncryptHelper.Md5(param.Password);
 
                 var addRes = await _userRepository.InsertAsync(param.Adapt<UserInfo>());
 
@@ -128,17 +129,19 @@ namespace Gromi.Application.Common.LoginModule
                 }
 
                 long verifyRes = -1;
-                var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);
-                if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
-                {
-                    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, loginParam.Password);
-                }
-                else
-                {
-                    result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Msg = "验证码错误,请重试";
-                    return result;
-                }
+                // 适配前端登录：如果设计出图片验证就使用图片验证，反之则先使用滑动验证
+                //var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);
+                //if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
+                //{
+                //    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, loginParam.Password);
+                //}
+                //else
+                //{
+                //    result.Code = ResponseCodeEnum.InvalidParameter;
+                //    result.Msg = "验证码错误,请重试";
+                //    return result;
+                //}
+                verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptHelper.Md5(loginParam.Password));
                 if (verifyRes != -1)
                 {
                     var userInfo = await _userRepository.GetModelAsync(verifyRes);

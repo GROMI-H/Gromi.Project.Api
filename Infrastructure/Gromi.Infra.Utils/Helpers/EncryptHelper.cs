@@ -123,7 +123,7 @@ namespace Gromi.Infra.Utils.Helpers
         /// </summary>
         /// <param name="input">输入字符串</param>
         /// <returns></returns>
-        public static string ComputeMd5Hash(string input)
+        public static string Md5(string input)
         {
             using (var md5 = MD5.Create())
             {

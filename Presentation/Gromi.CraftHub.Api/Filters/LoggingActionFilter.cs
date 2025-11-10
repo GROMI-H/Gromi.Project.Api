@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 
-namespace Gromi.CraftHub.Api.Filter
+namespace Gromi.CraftHub.Api.Filters
 {
     /// <summary>
     /// 请求日志过滤器

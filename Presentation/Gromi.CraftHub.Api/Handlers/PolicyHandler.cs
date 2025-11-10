@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System.Security.Claims;
 
-namespace Gromi.CraftHub.Api.Handler
+namespace Gromi.CraftHub.Api.Handlers
 {
     /// <summary>
     /// 角色授权处理

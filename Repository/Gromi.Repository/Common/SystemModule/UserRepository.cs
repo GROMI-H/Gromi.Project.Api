@@ -25,6 +25,14 @@ namespace Gromi.Repository.Common.SystemModule
         /// <param name="id"></param>
         /// <returns></returns>
         Task<UserInfo> GetUserInfoAsync(long id);
+
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        Task<bool> ResetPassword(long id, string password);
     }
 
     /// <summary>
@@ -52,6 +60,12 @@ namespace Gromi.Repository.Common.SystemModule
                 .Where(u => u.Account == account && u.Password == password)
                 .FirstAsync();
             return userInfo != null ? userInfo.Id : -1;
+        }
+
+        public async Task<bool> ResetPassword(long id, string password)
+        {
+            var res = await _fsql.Update<UserInfo>().Set(item => item.Password, password).ExecuteAffrowsAsync();
+            return res > 0 ? true : false;
         }
     }
 }

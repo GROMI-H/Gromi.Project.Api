@@ -1,5 +1,5 @@
 ﻿using Gromi.Application.CraftHub.MemoModule;
-using Gromi.CraftHub.Api.Filter;
+using Gromi.CraftHub.Api.Filters;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Params;
 using Gromi.Infra.Entity.CraftHub.MemoModule.Dtos;

@@ -1,6 +1,6 @@
 ﻿using Gromi.Infra.Entity.Common.BaseModule.Params;
 
-namespace Gromi.Infra.Entity.Common.LoginModule.Dtos
+namespace Gromi.Infra.Entity.Common.AuthModule.Dtos
 {
     /// <summary>
     /// 登录响应

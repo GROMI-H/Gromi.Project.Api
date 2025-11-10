@@ -1,6 +1,8 @@
 ﻿using Gromi.Application.Common.SystemModule;
-using Gromi.CraftHub.Api.Filter;
+using Gromi.CraftHub.Api.Filters;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using Gromi.Infra.Entity.Common.BaseModule.Params;
+using Gromi.Infra.Entity.Common.SystemModule.Dtos;
 using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +54,32 @@ namespace Gromi.CraftHub.Api.Controllers.SystemModule
         public async Task<IActionResult> UnBindRole([FromBody] BindRoleParam param)
         {
             BaseResult res = await _userService.UnBindRoles(param);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("ResetPassword")]
+        [Description("重置密码")]
+        public async Task<IActionResult> ResetPassword([FromBody] BaseParam param)
+        {
+            BaseResult res = await _userService.ResetPassrod(param);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// 更新用户信息
+        /// </summary>
+        /// <param name="userInfoDto"></param>
+        /// <returns></returns>
+        [HttpPost("UpdateUserInfo")]
+        [Description("更新用户信息")]
+        public async Task<IActionResult> UpdateUserInfo([FromBody] UserInfoDto userInfoDto)
+        {
+            BaseResult res = await _userService.UpdateUserInfo(userInfoDto);
             return Ok(res);
         }
     }

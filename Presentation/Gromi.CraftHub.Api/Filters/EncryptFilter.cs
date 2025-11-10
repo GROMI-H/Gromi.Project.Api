@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace Gromi.CraftHub.Api.Filter
+namespace Gromi.CraftHub.Api.Filters
 {
     /// <summary>
     /// 加解密过滤器

@@ -1,12 +1,12 @@
-﻿using Gromi.Application.Common.LoginModule;
-using Gromi.CraftHub.Api.Filter;
+﻿using Gromi.Application.Common.AuthModule;
+using Gromi.CraftHub.Api.Filters;
+using Gromi.Infra.Entity.Common.AuthModule.Dtos;
+using Gromi.Infra.Entity.Common.AuthModule.Params;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
-using Gromi.Infra.Entity.Common.LoginModule.Dtos;
-using Gromi.Infra.Entity.Common.LoginModule.Params;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
-namespace Gromi.CraftHub.Api.Controllers.LoginModule
+namespace Gromi.CraftHub.Api.Controllers.AuthModule
 {
     /// <summary>
     /// 登录控制器
@@ -37,8 +37,7 @@ namespace Gromi.CraftHub.Api.Controllers.LoginModule
         public async Task<IActionResult> Captcha()
         {
             BaseResult<byte[]> res = await _loginService.GetCaptcha();
-
-            return File(res.Data, "image/png");
+            return Ok(res);
         }
 
         /// <summary>

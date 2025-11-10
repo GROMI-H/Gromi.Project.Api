@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+using Gromi.Infra.Entity.Common.AuthModule.Dtos;
+using Gromi.Infra.Entity.Common.AuthModule.Params;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
-using Gromi.Infra.Entity.Common.LoginModule.Dtos;
-using Gromi.Infra.Entity.Common.LoginModule.Params;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gromi.Application.AutoMapper.Common.LoginModule

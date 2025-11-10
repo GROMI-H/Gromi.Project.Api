@@ -1,5 +1,5 @@
 ﻿using Gromi.Application.Common.SystemModule;
-using Gromi.CraftHub.Api.Filter;
+using Gromi.CraftHub.Api.Filters;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Microsoft.AspNetCore.Authorization;

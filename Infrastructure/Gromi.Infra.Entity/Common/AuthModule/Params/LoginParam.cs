@@ -1,4 +1,4 @@
-﻿namespace Gromi.Infra.Entity.Common.LoginModule.Params
+﻿namespace Gromi.Infra.Entity.Common.AuthModule.Params
 {
     /// <summary>
     /// 登录参数
