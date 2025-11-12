@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.CraftHub.Api", "Prese
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Application.AutoMapper", "Application\Gromi.Application.AutoMapper\Gromi.Application.AutoMapper.csproj", "{1B120F7B-A37A-4D61-94F1-B4E3F270510A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gromi.Application.Validator", "Application\Gromi.Application.Validator\Gromi.Application.Validator.csproj", "{D0B27631-85BD-481D-9C9B-5681484CBF4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{1B120F7B-A37A-4D61-94F1-B4E3F270510A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B120F7B-A37A-4D61-94F1-B4E3F270510A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B120F7B-A37A-4D61-94F1-B4E3F270510A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0B27631-85BD-481D-9C9B-5681484CBF4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0B27631-85BD-481D-9C9B-5681484CBF4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0B27631-85BD-481D-9C9B-5681484CBF4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0B27631-85BD-481D-9C9B-5681484CBF4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{E6E01951-5A25-4175-BAB0-8C81CD3E565A} = {9A54E5E9-AF48-4FE2-9042-C29840E42989}
 		{E4DC8E9E-FFCD-4719-9835-4488EA6375C3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{1B120F7B-A37A-4D61-94F1-B4E3F270510A} = {06AE0568-2B9E-4129-B2A0-C9552578D07E}
+		{D0B27631-85BD-481D-9C9B-5681484CBF4B} = {06AE0568-2B9E-4129-B2A0-C9552578D07E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22CAF464-7B90-46F5-A810-6EFAE8B3B1D1}

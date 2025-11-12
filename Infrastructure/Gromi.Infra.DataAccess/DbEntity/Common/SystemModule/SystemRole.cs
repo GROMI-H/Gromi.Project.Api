@@ -22,6 +22,12 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         public override long Id { get; set; }
 
         /// <summary>
+        /// 角色编码
+        /// </summary>
+        [Column(StringLength = 25)]
+        public string Code { get; set; }
+
+        /// <summary>
         /// 角色名称
         /// </summary>
         [Column(StringLength = 25)]

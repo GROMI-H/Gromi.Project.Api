@@ -46,7 +46,7 @@ namespace Gromi.Infra.Entity.CraftHub.MemoModule.Dtos
         /// <summary>
         /// 类型
         /// </summary>
-        public NoteType Type { get; set; }
+        public NoteType Type { get; set; } = NoteType.Default;
 
         /// <summary>
         /// 账号
@@ -61,16 +61,11 @@ namespace Gromi.Infra.Entity.CraftHub.MemoModule.Dtos
         /// <summary>
         /// 状态
         /// </summary>
-        public DeleteEnum Status { get; set; }
+        public DeleteEnum Status { get; set; } = DeleteEnum.NotDeleted;
 
         /// <summary>
         /// 标签Id
         /// </summary>
         public long TagId { get; set; }
-
-        /// <summary>
-        /// 用户Id
-        /// </summary>
-        public long UserId { get; set; }
     }
 }

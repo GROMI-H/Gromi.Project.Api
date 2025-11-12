@@ -52,11 +52,6 @@ namespace Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule
         public DeleteEnum Status { get; set; } = DeleteEnum.NotDeleted;
 
         /// <summary>
-        /// 用户Id
-        /// </summary>
-        public long UserId { get; set; }
-
-        /// <summary>
         /// 标签Id
         /// </summary>
         public long TagId { get; set; }
@@ -64,12 +59,6 @@ namespace Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule
         #endregion 字段
 
         #region 关联
-
-        /// <summary>
-        /// 用户信息(导航属性)
-        /// </summary>
-        [Navigate(nameof(UserId))]
-        public virtual UserInfo User { get; set; }
 
         /// <summary>
         /// 标签(导航属性)

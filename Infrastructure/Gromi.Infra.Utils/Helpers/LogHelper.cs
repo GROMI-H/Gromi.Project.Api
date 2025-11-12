@@ -33,7 +33,7 @@
         /// <param name="msg"></param>
         public static void Info(string msg)
         {
-            Write(GetLogFilePath(LogLevel.Debug), msg);
+            Write(GetLogFilePath(LogLevel.Info), msg);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@
                 {
                     using (var fs = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
                     {
-                        byte[] dataArray = System.Text.Encoding.UTF8.GetBytes($"【{DateTime.Now:yyyy-MM-dd HH:mm:ss}\r{msg}\r");
+                        byte[] dataArray = System.Text.Encoding.UTF8.GetBytes($"【{DateTime.Now:yyyy-MM-dd HH:mm:ss}】\r{msg}\r");
                         fs.Seek(0, SeekOrigin.End);
                         fs.Write(dataArray, 0, dataArray.Length);
                     }

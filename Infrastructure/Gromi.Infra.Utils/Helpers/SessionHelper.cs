@@ -25,7 +25,7 @@ namespace Gromi.Infra.Utils.Helpers
         {
             if (_httpContextAccessor != null && _httpContextAccessor.HttpContext.Session.TryGetValue(name, out var value))
             {
-                return JsonConvert.DeserializeObject<object>(System.Text.Encoding.UTF8.GetString(value));
+                return JsonConvert.DeserializeObject<object>(Encoding.UTF8.GetString(value));
             }
             return null;
         }

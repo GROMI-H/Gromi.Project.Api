@@ -1,4 +1,5 @@
-﻿using Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule;
+﻿using Gromi.Application.Validator.CraftHub.MemoModule;
+using Gromi.Infra.DataAccess.DbEntity.CraftHub.MemoModule;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
@@ -16,7 +17,7 @@ namespace Gromi.Application.CraftHub.MemoModule
     /// </summary>
     public interface INoteService
     {
-        #region NoteRecord
+        #region Record
 
         /// <summary>
         /// 获取笔记列表
@@ -38,9 +39,16 @@ namespace Gromi.Application.CraftHub.MemoModule
         /// <returns></returns>
         Task<BaseResult<NoteRecordDto>> AddNoteRecord(NoteRecordDto param);
 
-        #endregion NoteRecord
+        /// <summary>
+        /// 更新笔记记录
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult> UpdateNoteRecord(NoteRecordDto param);
 
-        #region NoteTag
+        #endregion Record
+
+        #region Tag
 
         /// <summary>
         /// 获取标签列表
@@ -62,7 +70,14 @@ namespace Gromi.Application.CraftHub.MemoModule
         /// <returns></returns>
         Task<BaseResult> DeleteNoteTag(BaseDeleteParam param);
 
-        #endregion NoteTag
+        /// <summary>
+        /// 更新标签
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult> UpdateNotetag(NoteTagDto param);
+
+        #endregion Tag
     }
 
     /// <summary>
@@ -82,7 +97,7 @@ namespace Gromi.Application.CraftHub.MemoModule
             _flowRepository = flowRepository;
         }
 
-        #region NoteRecord
+        #region Record
 
         public async Task<BaseResult<IEnumerable<NoteRecordDto>>> GetNoteRecordList()
         {
@@ -167,10 +182,11 @@ namespace Gromi.Application.CraftHub.MemoModule
             };
             try
             {
-                if (param.UserId == 0 || param.TagId == 0)
+                var validateRes = new NoteRecordValidator().Validate(param);
+                if (!validateRes.IsValid)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Message = "添加失败，参数异常";
+                    result.Message = string.Join(";", validateRes.Errors);
                     return result;
                 }
                 var addRes = await _recordRepository.InsertAsync(param.Adapt<NoteRecord>());
@@ -194,9 +210,34 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
         }
 
-        #endregion NoteRecord
+        public async Task<BaseResult> UpdateNoteRecord(NoteRecordDto param)
+        {
+            BaseResult result = new BaseResult { Code = ResponseCodeEnum.InternalError };
+            try
+            {
+                var validateRes = new NoteRecordValidator().Validate(param);
+                if (!validateRes.IsValid)
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Message = string.Join(";", validateRes.Errors);
+                    return result;
+                }
 
-        #region NoteTag
+                var updateRes = await _recordRepository.UpdateAsync(param.Adapt<NoteRecord>());
+                result.Code = updateRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
+                result.Message = updateRes ? "更新成功" : "更新失败";
+            }
+            catch (Exception ex)
+            {
+                result.Message = $"更新失败:{ex.Message}";
+                LogHelper.Error(result.Message);
+            }
+            return result;
+        }
+
+        #endregion Record
+
+        #region Tag
 
         public async Task<BaseResult<NoteTagDto>> AddNoteTag(NoteTagDto tag)
         {
@@ -207,10 +248,11 @@ namespace Gromi.Application.CraftHub.MemoModule
             };
             try
             {
-                if (tag.UserId == 0)
+                var validateRes = new NoteTagValidator().Validate(tag);
+                if (!validateRes.IsValid)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Message = "添加失败，参数异常";
+                    result.Message = string.Join(";", validateRes.Errors);
                     return result;
                 }
 
@@ -309,6 +351,23 @@ namespace Gromi.Application.CraftHub.MemoModule
             }
         }
 
-        #endregion NoteTag
+        public async Task<BaseResult> UpdateNotetag(NoteTagDto param)
+        {
+            BaseResult result = new BaseResult();
+            try
+            {
+                var updateRes = await _tagRepository.UpdateAsync(param.Adapt<NoteTag>());
+                result.Code = updateRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
+                result.Message = updateRes ? "更新成功" : "更新失败";
+            }
+            catch (Exception ex)
+            {
+                result.Message = $"更新失败:{ex.Message}";
+                LogHelper.Error(result.Message);
+            }
+            return result;
+        }
+
+        #endregion Tag
     }
 }

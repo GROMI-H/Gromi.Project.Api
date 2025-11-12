@@ -1,4 +1,5 @@
-﻿using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+﻿using Gromi.Application.Validator.Common.SystemModule;
+using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
 using Gromi.Infra.DataAccess.Shared;
 using Gromi.Infra.Entity.Common.AuthModule.Dtos;
 using Gromi.Infra.Entity.Common.AuthModule.Params;
@@ -62,10 +63,11 @@ namespace Gromi.Application.Common.AuthModule
 
             try
             {
-                if (string.IsNullOrEmpty(param.Name) || string.IsNullOrEmpty(param.Account) || string.IsNullOrEmpty(param.Password))
+                var validateRes = new RegisterValidator().Validate(param);
+                if (!validateRes.IsValid)
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Message = "注册失败，参数有误";
+                    result.Message = string.Join(";", validateRes.Errors);
                     return result;
                 }
 
@@ -136,7 +138,7 @@ namespace Gromi.Application.Common.AuthModule
                 var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);
                 SessionHelper.RemoveSession(CommonConstant.CaptchaKey); // 获取后就删除指定Key
                 if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
-                {   
+                {
                     verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptHelper.Md5(loginParam.Password));
                 }
                 else
