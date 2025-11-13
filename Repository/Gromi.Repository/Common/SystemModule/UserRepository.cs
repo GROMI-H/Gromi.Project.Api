@@ -27,6 +27,13 @@ namespace Gromi.Repository.Common.SystemModule
         Task<UserInfo> GetUserInfoAsync(long id);
 
         /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        Task<UserInfo> GetUserInfoAsync(string account);
+
+        /// <summary>
         /// 重置密码
         /// </summary>
         /// <param name="id"></param>
@@ -66,6 +73,11 @@ namespace Gromi.Repository.Common.SystemModule
         {
             var res = await _fsql.Update<UserInfo>().Set(item => item.Password, password).ExecuteAffrowsAsync();
             return res > 0 ? true : false;
+        }
+
+        public async Task<UserInfo> GetUserInfoAsync(string account)
+        {
+            return await _fsql.Select<UserInfo>().Where(u => u.Account == account).FirstAsync();
         }
     }
 }

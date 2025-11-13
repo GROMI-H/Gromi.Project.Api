@@ -41,6 +41,12 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         [Column(StringLength = 50)]
         public string Password { get; set; }
 
+        /// <summary>
+        /// 盐
+        /// </summary>
+        [Column(StringLength = 50)]
+        public string Salt { get; set; }
+
         #endregion 字段
 
         #region 关联

@@ -10,5 +10,9 @@
         /// </summary>
         public static string CaptchaKey = "Captcha";
 
+        /// <summary>
+        /// 验证码过期时间键
+        /// </summary>
+        public static string CaptchaExpireKey = "CaptchaExpire";
     }
 }

@@ -11,7 +11,6 @@ using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.Common.SystemModule;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace Gromi.Application.Common.AuthModule
 {
@@ -70,10 +69,13 @@ namespace Gromi.Application.Common.AuthModule
                     result.Message = string.Join(";", validateRes.Errors);
                     return result;
                 }
+                // 密码加盐
+                string salt = EncryptHelper.Md5(GeneratorHelper.GenerateRandomString(5));
+                param.Password = EncryptHelper.Md5(param.Password + salt);
 
-                param.Password = EncryptHelper.Md5(param.Password);
-
-                var addRes = await _userRepository.InsertAsync(param.Adapt<UserInfo>());
+                var userInfo = param.Adapt<UserInfo>();
+                userInfo.Salt = salt;
+                var addRes = await _userRepository.InsertAsync(userInfo);
 
                 result.Code = addRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Message = addRes != null ? "注册成功" : "注册失败";
@@ -103,9 +105,8 @@ namespace Gromi.Application.Common.AuthModule
                 BaseResult<string> result = new BaseResult<string>();
 
                 var captchaData = CaptchaHelper.GenerateCaptcha();
-
                 SessionHelper.SetSession(CommonConstant.CaptchaKey, captchaData.Code);
-
+                SessionHelper.SetSession(CommonConstant.CaptchaExpireKey, DateTime.UtcNow.AddMinutes(1).ToString("o"));
                 result.Code = ResponseCodeEnum.Success;
                 result.Data = $"data:image/png;base64,{Convert.ToBase64String(captchaData.Image)}";
 
@@ -136,10 +137,24 @@ namespace Gromi.Application.Common.AuthModule
 
                 long verifyRes = -1;
                 var sessionCaptcha = SessionHelper.GetSession(CommonConstant.CaptchaKey);
+                var sessionCaptchaExpire = SessionHelper.GetSession(CommonConstant.CaptchaExpireKey);
+                if (sessionCaptchaExpire == null || !DateTime.TryParse(sessionCaptchaExpire.ToString(), out DateTime expirationTime) || DateTime.UtcNow > expirationTime)
+                {
+                    result.Code = ResponseCodeEnum.Timeout;
+                    result.Message = "验证码已过期,请刷新重试";
+                    return result;
+                }
                 SessionHelper.RemoveSession(CommonConstant.CaptchaKey); // 获取后就删除指定Key
                 if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
                 {
-                    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptHelper.Md5(loginParam.Password));
+                    var userInfo = await _userRepository.GetUserInfoAsync(loginParam.Account);
+                    if (userInfo == null)
+                    {
+                        result.Code = ResponseCodeEnum.NotFound;
+                        result.Message = "未查询到用户信息";
+                        return result;
+                    }
+                    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptHelper.Md5(loginParam.Password + userInfo.Salt));
                 }
                 else
                 {
@@ -157,7 +172,7 @@ namespace Gromi.Application.Common.AuthModule
                         result.Message = $"登录失败：创建Token失败";
                         return result;
                     }
-
+                    result.Code = ResponseCodeEnum.Success;
                     result.Data = userInfo.Adapt<LoginResponse>();
                     result.Data.Token = tokenDto.Data.Token;
                     result.Message = "登录成功";
