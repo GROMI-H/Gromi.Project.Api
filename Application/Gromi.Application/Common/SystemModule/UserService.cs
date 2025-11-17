@@ -52,6 +52,13 @@ namespace Gromi.Application.Common.SystemModule
         /// <param name="param"></param>
         /// <returns></returns>
         Task<BaseResult> DeleteUser(BaseDeleteParam param);
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult<UserInfoDto>> GetUserInfo(BaseParam param);
     }
 
     [AutoInject(ServiceLifetime.Scoped)]
@@ -209,6 +216,39 @@ namespace Gromi.Application.Common.SystemModule
             catch (Exception ex)
             {
                 result.Message = $"删除失败{ex.Message}";
+                LogHelper.Error(result.Message);
+            }
+            return result;
+        }
+
+        public async Task<BaseResult<UserInfoDto>> GetUserInfo(BaseParam param)
+        {
+            BaseResult<UserInfoDto> result = new BaseResult<UserInfoDto>
+            {
+                Code = ResponseCodeEnum.InternalError,
+                Data = new UserInfoDto()
+            };
+
+            try
+            {
+                if (param.Id == null)
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Message = "参数有误";
+                    return result;
+                }
+                var queryRes = await _userRepository.GetModelAsync(param.Id.Value);
+                result.Code = queryRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
+                result.Message = queryRes != null ? "查询成功" : "数据不存在";
+                if (queryRes != null)
+                {
+                    result.Data = queryRes.Adapt<UserInfoDto>();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.Message = $"查询失败:{ex.Message}";
                 LogHelper.Error(result.Message);
             }
             return result;

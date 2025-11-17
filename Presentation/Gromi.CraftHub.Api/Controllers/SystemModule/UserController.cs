@@ -95,5 +95,18 @@ namespace Gromi.CraftHub.Api.Controllers.SystemModule
             BaseResult res = await _userService.DeleteUser(param);
             return Ok(res);
         }
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("GetUserInfo")]
+        [Description("获取用户信息")]
+        public async Task<IActionResult> GetUserInfo([FromBody] BaseParam param)
+        {
+            BaseResult<UserInfoDto> res = await _userService.GetUserInfo(param);
+            return Ok(res);
+        }
     }
 }

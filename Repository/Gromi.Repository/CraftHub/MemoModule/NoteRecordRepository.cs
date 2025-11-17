@@ -17,6 +17,13 @@ namespace Gromi.Repository.CraftHub.MemoModule
         /// <param name="ids"></param>
         /// <returns></returns>
         Task<OperationResEnum> DeleteNoteRecordAsync(List<long> ids);
+
+        /// <summary>
+        ///添加记录
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        Task<NoteRecord> InsertRecordAsync(NoteRecord record);
     }
 
     /// <summary>
@@ -36,6 +43,25 @@ namespace Gromi.Repository.CraftHub.MemoModule
                 .Where(entiy => ids.Contains(entiy.Id))
                 .ExecuteAffrowsAsync();
             return res > 0 ? OperationResEnum.Success : OperationResEnum.Fail;
+        }
+
+        public async Task<NoteRecord> InsertRecordAsync(NoteRecord record)
+        {
+            using (var uow = _fsql.CreateUnitOfWork())
+            {
+                try
+                {
+                    record = await _fsql.GetRepository<NoteRecord>().InsertAsync(record);
+                    record.FlowItems = await _fsql.GetRepository<FlowItem>().InsertAsync(record.FlowItems);
+                    uow.Commit();
+                    return record;
+                }
+                catch (Exception ex)
+                {
+                    uow.Rollback();
+                    throw new Exception(ex.Message);
+                }
+            }
         }
     }
 }

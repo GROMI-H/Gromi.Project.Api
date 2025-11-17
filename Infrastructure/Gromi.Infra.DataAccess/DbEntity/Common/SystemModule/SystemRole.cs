@@ -3,6 +3,7 @@ using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule.Relations;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
+using System.ComponentModel;
 
 namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
 {

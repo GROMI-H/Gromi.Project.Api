@@ -3,7 +3,7 @@
     /// <summary>
     /// 路由类型
     /// </summary>
-    public enum RouteTypeEnum
+    public enum ApiTypeEnum
     {
         GET,
         POST,

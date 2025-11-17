@@ -67,5 +67,28 @@ namespace Gromi.Infra.Entity.CraftHub.MemoModule.Dtos
         /// 标签Id
         /// </summary>
         public long TagId { get; set; }
+
+        /// <summary>
+        /// 流程项
+        /// </summary>
+        public List<FlowItemDto> FlowItems { get; set; } = new List<FlowItemDto>();
+    }
+
+    /// <summary>
+    /// 流程单项Dto
+    /// </summary>
+    public class FlowItemDto
+    {
+        public long Id { get; set; }
+
+        /// <summary>
+        /// 内容
+        /// </summary>
+        public string Content { get; set; }
+
+        /// <summary>
+        /// 序列号
+        /// </summary>
+        public int SortIndex { get; set; }
     }
 }

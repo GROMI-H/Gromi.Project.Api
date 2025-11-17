@@ -3,6 +3,7 @@ using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule.Relations;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
+using System.ComponentModel;
 
 namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
 {
@@ -21,30 +22,35 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         /// 控制器名称
         /// </summary>
         [Column(StringLength = 25)]
+        [Description("控制器名称")]
         public string Name { get; set; }
 
         /// <summary>
-        /// 路由类型
+        /// 接口类型
         /// </summary>
         [Column(MapType = typeof(int))]
-        public RouteTypeEnum RouteType { get; set; } = RouteTypeEnum.GET;
+        [Description("接口类型")]
+        public ApiTypeEnum RouteType { get; set; } = ApiTypeEnum.GET;
 
         /// <summary>
-        /// 路由描述
+        /// 接口描述
         /// </summary>
         [Column(StringLength = 25)]
+        [Description("接口描述")]
         public string Description { get; set; }
 
         /// <summary>
-        /// 路由内容
+        /// 接口内容
         /// </summary>
         [Column(StringLength = 25)]
+        [Description("接口内容")]
         public string Route { get; set; }
 
         /// <summary>
         /// 删除状态
         /// </summary>
         [Column(MapType = typeof(int))]
+        [Description("删除状态")]
         public DeleteEnum IsDeleted { get; set; } = DeleteEnum.NotDeleted;
 
         /// <summary>

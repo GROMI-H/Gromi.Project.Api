@@ -189,7 +189,7 @@ namespace Gromi.Application.CraftHub.MemoModule
                     result.Message = string.Join(";", validateRes.Errors);
                     return result;
                 }
-                var addRes = await _recordRepository.InsertAsync(param.Adapt<NoteRecord>());
+                var addRes = await _recordRepository.InsertRecordAsync(param.Adapt<NoteRecord>());
                 if (addRes != null)
                 {
                     result.Code = ResponseCodeEnum.Success;
@@ -356,6 +356,13 @@ namespace Gromi.Application.CraftHub.MemoModule
             BaseResult result = new BaseResult();
             try
             {
+                var validateRes = new NoteTagValidator().Validate(param);
+                if (!validateRes.IsValid)
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Message = string.Join(";", validateRes.Errors);
+                    return result;
+                }
                 var updateRes = await _tagRepository.UpdateAsync(param.Adapt<NoteTag>());
                 result.Code = updateRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Message = updateRes ? "更新成功" : "更新失败";

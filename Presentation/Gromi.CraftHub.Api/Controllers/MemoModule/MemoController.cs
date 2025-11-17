@@ -64,10 +64,23 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// <returns></returns>
         [HttpPost("Record/GetList")]
         [Description("查询记录列表")]
-        public async Task<IActionResult> GetNoteTagList()
+        public async Task<IActionResult> GetNoteRecordList()
         {
             BaseResult<IEnumerable<NoteRecordDto>> result = await _noteService.GetNoteRecordList();
             return Ok(result);
+        }
+
+        /// <summary>
+        /// 更新笔记记录
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("Record/Update")]
+        [Description("更新笔记记录")]
+        public async Task<IActionResult> UpdateNoteRecord([FromBody] NoteRecordDto param)
+        {
+            BaseResult res = await _noteService.UpdateNoteRecord(param);
+            return Ok(res);
         }
 
         #endregion 记录
@@ -106,10 +119,23 @@ namespace Gromi.CraftHub.Api.Controllers.MemoModule
         /// <returns></returns>
         [HttpPost("Tag/GetList")]
         [Description("查询标签列表")]
-        public async Task<IActionResult> GetNoteRecordList()
+        public async Task<IActionResult> GetNoteTagList()
         {
             BaseResult<IEnumerable<NoteTagDto>> result = await _noteService.GetNoteTagList();
             return Ok(result);
+        }
+
+        /// <summary>
+        /// 更新笔记标签
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("Tag/Update")]
+        [Description("更新笔记标签")]
+        public async Task<IActionResult> UpdateNoteTag([FromBody] NoteTagDto param)
+        {
+            BaseResult res = await _noteService.UpdateNotetag(param);
+            return Ok(res);
         }
 
         #endregion 标签

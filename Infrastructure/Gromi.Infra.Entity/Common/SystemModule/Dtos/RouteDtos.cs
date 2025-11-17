@@ -17,7 +17,7 @@ namespace Gromi.Infra.Entity.Common.SystemModule.Dtos
         /// <summary>
         /// 路由类型
         /// </summary>
-        public RouteTypeEnum RouteType { get; set; } = RouteTypeEnum.GET;
+        public ApiTypeEnum RouteType { get; set; } = ApiTypeEnum.GET;
 
         /// <summary>
         /// 路由描述

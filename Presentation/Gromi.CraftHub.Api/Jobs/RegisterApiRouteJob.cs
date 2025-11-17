@@ -57,34 +57,34 @@ namespace Gromi.CraftHub.Api.Jobs
                     foreach (var httpAttribute in httpAttributes)
                     {
                         string template = string.Empty;
-                        RouteTypeEnum routeType = RouteTypeEnum.GET;
+                        ApiTypeEnum routeType = ApiTypeEnum.GET;
 
                         // 根据属性类型获取路由模板
                         switch (httpAttribute)
                         {
                             case HttpGetAttribute getAttr:
                                 template = getAttr.Template ?? "";
-                                routeType |= RouteTypeEnum.GET;
+                                routeType |= ApiTypeEnum.GET;
                                 break;
 
                             case HttpPostAttribute postAttr:
                                 template = postAttr.Template ?? "";
-                                routeType |= RouteTypeEnum.POST;
+                                routeType |= ApiTypeEnum.POST;
                                 break;
 
                             case HttpPutAttribute putAttr:
                                 template = putAttr.Template ?? "";
-                                routeType |= RouteTypeEnum.PUT;
+                                routeType |= ApiTypeEnum.PUT;
                                 break;
 
                             case HttpDeleteAttribute deleteAttr:
                                 template = deleteAttr.Template ?? "";
-                                routeType |= RouteTypeEnum.DELETE;
+                                routeType |= ApiTypeEnum.DELETE;
                                 break;
 
                             case HttpPatchAttribute patchAttr:
                                 template = patchAttr.Template ?? "";
-                                routeType |= RouteTypeEnum.PATCH;
+                                routeType |= ApiTypeEnum.PATCH;
                                 break;
                         }
 
