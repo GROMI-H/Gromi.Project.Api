@@ -1,6 +1,8 @@
 ﻿using Gromi.Application.Common.SystemModule;
 using Gromi.CraftHub.Api.Filters;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using Gromi.Infra.Entity.Common.BaseModule.Params;
+using Gromi.Infra.Entity.Common.SystemModule.Dtos;
 using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +54,45 @@ namespace Gromi.CraftHub.Api.Controllers.SystemModule
         public async Task<IActionResult> UnBindApi([FromBody] BindApiParam param)
         {
             BaseResult res = await _roleService.UnBindApis(param);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("DeleteRole")]
+        [Description("删除角色")]
+        public async Task<IActionResult> DeleteRole([FromBody] BaseDeleteParam param)
+        {
+            BaseResult res = await _roleService.DeleteRole(param);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// 添加角色
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("AddRole")]
+        [Description("添加角色")]
+        public async Task<IActionResult> AddSystemRole([FromBody] SystemRoleDto param)
+        {
+            BaseResult res = await _roleService.AddSystemRole(param);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// 获取角色信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet("GetRole")]
+        [Description("获取角色信息")]
+        public async Task<IActionResult> GetSystemRole([FromQuery] BaseParam param)
+        {
+            BaseResult res = await _roleService.GetSystemRole(param);
             return Ok(res);
         }
     }

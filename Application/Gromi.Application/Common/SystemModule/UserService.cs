@@ -45,6 +45,13 @@ namespace Gromi.Application.Common.SystemModule
         /// <param name="param"></param>
         /// <returns></returns>
         Task<BaseResult> UpdateUserInfo(UserInfoDto param);
+
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult> DeleteUser(BaseDeleteParam param);
     }
 
     [AutoInject(ServiceLifetime.Scoped)]
@@ -139,7 +146,15 @@ namespace Gromi.Application.Common.SystemModule
                     result.Message = "重置失败，参数有误";
                     return result;
                 }
-                var resetRes = await _userRepository.ResetPassword(param.Id.Value, EncryptHelper.Md5("123456"));
+
+                var userInfo = await _userRepository.GetModelAsync(param.Id.Value);
+                if (userInfo == null)
+                {
+                    result.Code = ResponseCodeEnum.NotFound;
+                    result.Message = "当前用户不存在";
+                    return result;
+                }
+                var resetRes = await _userRepository.ResetPassword(param.Id.Value, EncryptHelper.Md5("123456" + userInfo.Salt));
                 result.Code = resetRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Message = resetRes ? "重置成功" : "重置失败";
             }
@@ -167,6 +182,35 @@ namespace Gromi.Application.Common.SystemModule
                 LogHelper.Error(result.Message);
             }
 
+            return result;
+        }
+
+        public async Task<BaseResult> DeleteUser(BaseDeleteParam param)
+        {
+            BaseResult result = new BaseResult() { Code = ResponseCodeEnum.InternalError };
+
+            try
+            {
+                if (param.Id == null && param.Ids.Count == 0)
+                {
+                    result.Code = ResponseCodeEnum.InvalidParameter;
+                    result.Message = "删除失败，用户Id为空";
+                    return result;
+                }
+                if (param.Id != null)
+                {
+                    param.Ids.Add(param.Id.Value);
+                }
+
+                var delRes = await _userRepository.BatchDeleteUserAsync(param.Ids);
+                result.Code = delRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
+                result.Message = delRes ? "删除成功" : "删除失败";
+            }
+            catch (Exception ex)
+            {
+                result.Message = $"删除失败{ex.Message}";
+                LogHelper.Error(result.Message);
+            }
             return result;
         }
     }

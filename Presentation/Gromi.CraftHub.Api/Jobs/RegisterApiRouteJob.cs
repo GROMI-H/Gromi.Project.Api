@@ -94,7 +94,7 @@ namespace Gromi.CraftHub.Api.Jobs
 
                         apiRoutes.Add(new ApiRouteDto()
                         {
-                            Name = controller.Name,
+                            Name = controller.Name.Replace("Controller", ""),
                             Route = template,
                             Description = summary?.Description,
                             RouteType = routeType

@@ -44,7 +44,7 @@ namespace Gromi.Application.Common.SystemModule
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        Task<BaseResult<SystemRole>> GetSystemRole(BaseParam param);
+        Task<BaseResult<SystemRoleDto>> GetSystemRole(BaseParam param);
 
         /// <summary>
         /// 验证当前角色是否支持路由
@@ -53,6 +53,13 @@ namespace Gromi.Application.Common.SystemModule
         /// <param name="url"></param>
         /// <returns></returns>
         Task<BaseResult> VerifyUrl(List<long> roleIds, string? url);
+
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<BaseResult> DeleteRole(BaseDeleteParam param);
     }
 
     [AutoInject(ServiceLifetime.Scoped)]
@@ -165,7 +172,7 @@ namespace Gromi.Application.Common.SystemModule
             }
         }
 
-        public Task<BaseResult<SystemRole>> GetSystemRole(BaseParam param)
+        public Task<BaseResult<SystemRoleDto>> GetSystemRole(BaseParam param)
         {
             throw new NotImplementedException();
         }
@@ -196,6 +203,31 @@ namespace Gromi.Application.Common.SystemModule
                 LogHelper.Error(result.Message);
                 return await Task.FromResult(result);
             }
+        }
+
+        public async Task<BaseResult> DeleteRole(BaseDeleteParam param)
+        {
+            BaseResult result = new BaseResult
+            {
+                Code = ResponseCodeEnum.InternalError
+            };
+            try
+            {
+                if (param.Id != null)
+                {
+                    param.Ids.Add(param.Id.Value);
+                }
+
+                var delRes = await _roleRepository.BatchDeleteRoleAsync(param.Ids);
+                result.Code = delRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
+                result.Message = delRes ? "删除成功" : "删除失败";
+            }
+            catch (Exception ex)
+            {
+                result.Message = $"删除失败:{ex.Message}";
+                LogHelper.Error(result.Message);
+            }
+            return result;
         }
     }
 }

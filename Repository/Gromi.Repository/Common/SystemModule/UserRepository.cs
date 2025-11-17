@@ -40,6 +40,13 @@ namespace Gromi.Repository.Common.SystemModule
         /// <param name="password"></param>
         /// <returns></returns>
         Task<bool> ResetPassword(long id, string password);
+
+        /// <summary>
+        /// 批量删除用户
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        Task<bool> BatchDeleteUserAsync(List<long> ids);
     }
 
     /// <summary>
@@ -78,6 +85,33 @@ namespace Gromi.Repository.Common.SystemModule
         public async Task<UserInfo> GetUserInfoAsync(string account)
         {
             return await _fsql.Select<UserInfo>().Where(u => u.Account == account).FirstAsync();
+        }
+
+        public async Task<bool> BatchDeleteUserAsync(List<long> ids)
+        {
+            using (var uow = _fsql.CreateUnitOfWork())
+            {
+                try
+                {
+                    var repo = uow.GetRepository<UserInfo>();
+
+                    // 级联删除
+                    var groups = await repo.Select
+                        .IncludeMany(a => a.Tags, then => then.IncludeMany(tag => tag.Notes))
+                        .IncludeMany(b => b.UsersRoles)
+                        .Where(c => ids.Contains(c.Id))
+                        .ToListAsync();
+                    var delRes = await repo.DeleteAsync(groups);
+
+                    uow.Commit();
+                    return delRes > 0;
+                }
+                catch (Exception ex)
+                {
+                    uow.Rollback();
+                    throw new Exception(ex.Message);
+                }
+            }
         }
     }
 }

@@ -16,10 +16,11 @@ namespace Gromi.Infra.DataAccess.Shared
 
         public RedisServer(IEasyCachingProviderFactory factory, IConfiguration configuration)
         {
-            IsEnable = Convert.ToBoolean(configuration["EnableRedis"] ?? "false");
-            _redisProvieder = factory.GetCachingProvider("CsRedisWithMsgpack");
             var redisConfig = configuration.GetSection("Redis").Get<RedisConfig>();
+
+            IsEnable = Convert.ToBoolean(configuration["EnableRedis"] ?? "false");
             PREFIX = redisConfig != null ? redisConfig.Prefix : string.Empty;
+            _redisProvieder = factory.GetCachingProvider("CsRedisWithMsgpack");
         }
 
         /// <summary>
