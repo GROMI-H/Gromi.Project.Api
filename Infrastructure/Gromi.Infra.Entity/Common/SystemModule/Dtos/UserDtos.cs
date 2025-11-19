@@ -14,5 +14,10 @@
         /// 账号
         /// </summary>
         public string Account { get; set; }
+
+        /// <summary>
+        /// 头像
+        /// </summary>
+        public string Avatar { get; set; }
     }
 }

@@ -33,7 +33,12 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
         /// 用户名
         /// </summary>
         [Column(StringLength = 10)]
-        public string Name { get; set; }
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// 头像
+        /// </summary>
+        public string Avatar { get; set; }
 
         /// <summary>
         /// 密码

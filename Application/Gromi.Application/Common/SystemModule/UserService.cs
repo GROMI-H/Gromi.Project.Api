@@ -58,7 +58,7 @@ namespace Gromi.Application.Common.SystemModule
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        Task<BaseResult<UserInfoDto>> GetUserInfo(BaseParam param);
+        Task<BaseResult<UserInfoDto>> GetUserInfo(QueryUserParam param);
     }
 
     [AutoInject(ServiceLifetime.Scoped)]
@@ -221,7 +221,7 @@ namespace Gromi.Application.Common.SystemModule
             return result;
         }
 
-        public async Task<BaseResult<UserInfoDto>> GetUserInfo(BaseParam param)
+        public async Task<BaseResult<UserInfoDto>> GetUserInfo(QueryUserParam param)
         {
             BaseResult<UserInfoDto> result = new BaseResult<UserInfoDto>
             {
@@ -231,13 +231,13 @@ namespace Gromi.Application.Common.SystemModule
 
             try
             {
-                if (param.Id == null)
+                if (param.Id == null && string.IsNullOrEmpty(param.Account) && string.IsNullOrEmpty(param.UserName))
                 {
                     result.Code = ResponseCodeEnum.InvalidParameter;
-                    result.Message = "参数有误";
+                    result.Message = "查询参数有误";
                     return result;
                 }
-                var queryRes = await _userRepository.GetModelAsync(param.Id.Value);
+                var queryRes = await _userRepository.GetUserInfoAsync(param);
                 result.Code = queryRes != null ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Message = queryRes != null ? "查询成功" : "数据不存在";
                 if (queryRes != null)

@@ -2,6 +2,7 @@
 using Gromi.Infra.DataAccess.Shared;
 using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
+using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gromi.Repository.Common.SystemModule
@@ -24,14 +25,7 @@ namespace Gromi.Repository.Common.SystemModule
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<UserInfo> GetUserInfoAsync(long id);
-
-        /// <summary>
-        /// 获取用户信息
-        /// </summary>
-        /// <param name="account"></param>
-        /// <returns></returns>
-        Task<UserInfo> GetUserInfoAsync(string account);
+        Task<UserInfo> GetUserInfoAsync(QueryUserParam param);
 
         /// <summary>
         /// 重置密码
@@ -59,12 +53,23 @@ namespace Gromi.Repository.Common.SystemModule
         {
         }
 
-        public async Task<UserInfo> GetUserInfoAsync(long id)
+        public async Task<UserInfo> GetUserInfoAsync(QueryUserParam param)
         {
-            var userInfo = await _fsql.Select<UserInfo>()
-                .Where(u => u.Id == id)
-                .Include(u => u.UsersRoles)
-                .FirstAsync();
+            var query = _fsql.Select<UserInfo>()
+                .Include(u => u.UsersRoles);
+            if (param.Id != null)
+            {
+                query.Where(u => u.Id == param.Id.Value);
+            }
+            if (!string.IsNullOrEmpty(param.Account))
+            {
+                query.Where(u => u.Account == param.Account);
+            }
+            if (!string.IsNullOrEmpty(param.UserName))
+            {
+                query.Where(u => u.UserName.Contains(param.UserName));
+            }
+            var userInfo = await query.FirstAsync();
             return userInfo;
         }
 
@@ -82,11 +87,6 @@ namespace Gromi.Repository.Common.SystemModule
             return res > 0 ? true : false;
         }
 
-        public async Task<UserInfo> GetUserInfoAsync(string account)
-        {
-            return await _fsql.Select<UserInfo>().Where(u => u.Account == account).FirstAsync();
-        }
-
         public async Task<bool> BatchDeleteUserAsync(List<long> ids)
         {
             using (var uow = _fsql.CreateUnitOfWork())
@@ -96,6 +96,7 @@ namespace Gromi.Repository.Common.SystemModule
                     var repo = uow.GetRepository<UserInfo>();
 
                     // 级联删除
+                    // 删除用户下的标签、标签对应的日记和用户角色关系
                     var groups = await repo.Select
                         .IncludeMany(a => a.Tags, then => then.IncludeMany(tag => tag.Notes))
                         .IncludeMany(b => b.UsersRoles)

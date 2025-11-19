@@ -7,6 +7,7 @@ using Gromi.Infra.Entity.Common.BaseModule.Attributes;
 using Gromi.Infra.Entity.Common.BaseModule.Constant;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
+using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Gromi.Infra.Utils.Helpers;
 using Gromi.Repository.Common.SystemModule;
 using Mapster;
@@ -147,7 +148,7 @@ namespace Gromi.Application.Common.AuthModule
                 SessionHelper.RemoveSession(CommonConstant.CaptchaKey); // 获取后就删除指定Key
                 if (sessionCaptcha != null && loginParam.Captcha.ToUpper() == sessionCaptcha.ToString())
                 {
-                    var userInfo = await _userRepository.GetUserInfoAsync(loginParam.Account);
+                    var userInfo = await _userRepository.GetUserInfoAsync(new QueryUserParam { Account = loginParam.Account });
                     if (userInfo == null)
                     {
                         result.Code = ResponseCodeEnum.NotFound;

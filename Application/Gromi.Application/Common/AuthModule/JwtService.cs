@@ -74,7 +74,7 @@ namespace Gromi.Application.Common.AuthModule
                 // 完善用户信息
                 IEnumerable<Claim> claims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Name, userInfo.Name),
+                    new Claim(ClaimTypes.Name, userInfo.UserName),
                     new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(userInfo.Roles)),
                     new Claim(ClaimTypes.Expiration, expireAt.ToString())
                 };

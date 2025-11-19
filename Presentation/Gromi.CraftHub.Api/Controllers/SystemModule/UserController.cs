@@ -103,7 +103,7 @@ namespace Gromi.CraftHub.Api.Controllers.SystemModule
         /// <returns></returns>
         [HttpPost("GetUserInfo")]
         [Description("获取用户信息")]
-        public async Task<IActionResult> GetUserInfo([FromBody] BaseParam param)
+        public async Task<IActionResult> GetUserInfo([FromBody] QueryUserParam param)
         {
             BaseResult<UserInfoDto> res = await _userService.GetUserInfo(param);
             return Ok(res);
