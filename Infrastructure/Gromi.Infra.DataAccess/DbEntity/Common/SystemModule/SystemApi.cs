@@ -10,7 +10,7 @@ namespace Gromi.Infra.DataAccess.DbEntity.Common.SystemModule
     /// <summary>
     /// 系统接口路由表
     /// </summary>
-    [Table(Name = "sys_route")]
+    [Table(Name = "sys_api")]
     [Index("uk_route", "Route", true)]
     public class ApiRoute : BaseEntity
     {

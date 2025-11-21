@@ -1,4 +1,6 @@
-﻿using Mapster;
+﻿using Gromi.Infra.DataAccess.DbEntity.Common.SystemModule;
+using Gromi.Infra.Entity.Common.SystemModule.Dtos;
+using Mapster;
 
 namespace Gromi.CraftHub.Api.Configurations
 {
@@ -23,6 +25,24 @@ namespace Gromi.CraftHub.Api.Configurations
             #region 自定义映射配置
 
             // 覆盖全局配置
+
+            #region PageRouteDto <=> PageRoute
+
+            TypeAdapterConfig<PageRoute, PageRouteDto>.NewConfig()
+                .Map(dest => dest.Meta.Title, src => src.MetaTitle)
+                .Map(dest => dest.Meta.Order, src => src.MetaOrder)
+                .Map(dest => dest.Meta.NoBasicLayout, src => src.MetaNoBasicLayout)
+                .Map(dest => dest.Meta.AffixTab, src => src.MetaAffixTab)
+                .Map(dest => dest.Children, src => src.Children);
+
+            TypeAdapterConfig<PageRouteDto, PageRoute>.NewConfig()
+                .Map(dest => dest.MetaTitle, src => src.Meta.Title)
+                .Map(dest => dest.MetaOrder, src => src.Meta.Order)
+                .Map(dest => dest.MetaAffixTab, src => src.Meta.AffixTab)
+                .Map(dest => dest.MetaNoBasicLayout, src => src.Meta.NoBasicLayout)
+                .Map(dest => dest.Children, src => src.Children);
+
+            #endregion PageRouteDto <=> PageRoute
 
             #endregion 自定义映射配置
         }
