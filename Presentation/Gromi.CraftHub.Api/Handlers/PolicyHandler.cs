@@ -28,6 +28,7 @@ namespace Gromi.CraftHub.Api.Handlers
         /// <param name="schemes"></param>
         /// <param name="httpContextAccessor"></param>
         /// <param name="roleService"></param>
+        /// <param name="configuration"></param>
         public PolicyHandler(IAuthenticationSchemeProvider schemes, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IConfiguration configuration)
         {
             Schemes = schemes;

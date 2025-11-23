@@ -18,7 +18,7 @@ namespace Gromi.Application.Validator.Common.SystemModule
     {
         public RegisterValidator()
         {
-            RuleFor(reg => reg.Name).NotEmpty().WithMessage("用户名不能为空");
+            RuleFor(reg => reg.UserName).NotEmpty().WithMessage("用户名不能为空");
             RuleFor(reg => reg.Account)
                 .NotEmpty().WithMessage("账号不能为空")
                 .Length(5, 15).WithMessage("账号长度必须在5到15位之间");

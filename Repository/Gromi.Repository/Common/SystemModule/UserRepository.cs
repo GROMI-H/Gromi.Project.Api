@@ -56,7 +56,7 @@ namespace Gromi.Repository.Common.SystemModule
         public async Task<UserInfo> GetUserInfoAsync(QueryUserParam param)
         {
             var query = _fsql.Select<UserInfo>()
-                .Include(u => u.UsersRoles);
+                .IncludeMany(u => u.UsersRoles);
             if (param.Id != null)
             {
                 query.Where(u => u.Id == param.Id.Value);
