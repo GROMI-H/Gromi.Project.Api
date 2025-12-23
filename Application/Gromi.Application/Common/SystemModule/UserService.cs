@@ -7,6 +7,7 @@ using Gromi.Infra.Entity.Common.BaseModule.Params;
 using Gromi.Infra.Entity.Common.SystemModule.Dtos;
 using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Gromi.Infra.Utils.Helpers;
+using Gromi.Infra.Utils.Utils;
 using Gromi.Repository.Common.SystemModule;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
@@ -161,7 +162,7 @@ namespace Gromi.Application.Common.SystemModule
                     result.Message = "当前用户不存在";
                     return result;
                 }
-                var resetRes = await _userRepository.ResetPassword(param.Id.Value, EncryptHelper.Md5("123456" + userInfo.Salt));
+                var resetRes = await _userRepository.ResetPassword(param.Id.Value, EncryptUtil.Md5("123456" + userInfo.Salt));
                 result.Code = resetRes ? ResponseCodeEnum.Success : ResponseCodeEnum.Fail;
                 result.Message = resetRes ? "重置成功" : "重置失败";
             }

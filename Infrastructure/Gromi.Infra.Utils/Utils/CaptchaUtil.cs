@@ -4,9 +4,12 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace Gromi.Infra.Utils.Helpers
+namespace Gromi.Infra.Utils.Utils
 {
-    public static class CaptchaHelper
+    /// <summary>
+    /// 验证码生成器
+    /// </summary>
+    public static class CaptchaUtil
     {
         private static readonly char[] _chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789".ToArray();
 
@@ -94,7 +97,7 @@ namespace Gromi.Infra.Utils.Helpers
                     var text = code[i].ToString();
 
                     // 每个字符的 X 坐标
-                    var x = startX + (int)(charWidths.Take(i).Sum()) + (charWidths[i] - textSize) / 2 + 10;
+                    var x = startX + (int)charWidths.Take(i).Sum() + (charWidths[i] - textSize) / 2 + 10;
                     var y = height / 2f - textSize / 2f;
 
                     // 旋转绘制

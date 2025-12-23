@@ -1,6 +1,9 @@
-﻿namespace Gromi.Infra.Utils.Helpers
+﻿namespace Gromi.Infra.Utils.Utils
 {
-    public static class TimeHelper
+    /// <summary>
+    /// 时间处理工具
+    /// </summary>
+    public static class TimeUtil
     {
         /// <summary>
         /// 获取时间戳

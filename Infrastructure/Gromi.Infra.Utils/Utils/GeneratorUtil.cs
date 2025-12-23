@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace Gromi.Infra.Utils.Helpers
+namespace Gromi.Infra.Utils.Utils
 {
-    public static class GeneratorHelper
+    public static class GeneratorUtil
     {
         // 定义可用于生成字符串的字符集
         private static readonly char[] chars =

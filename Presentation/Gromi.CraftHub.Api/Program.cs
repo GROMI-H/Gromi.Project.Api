@@ -1,5 +1,7 @@
 using Gromi.CraftHub.Api.Configurations;
+using Gromi.CraftHub.Api.Middlewares;
 using Gromi.Infra.Utils.Helpers;
+using Gromi.Infra.Utils.Utils;
 
 namespace Gromi.CraftHub.Api
 {
@@ -63,6 +65,8 @@ namespace Gromi.CraftHub.Api
 
             var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
             SessionHelper.Init(httpContextAccessor);
+
+            app.UseMiddleware<ExceptionHandleMiddleware>();
 
             //if (app.Environment.IsDevelopment())
             //{

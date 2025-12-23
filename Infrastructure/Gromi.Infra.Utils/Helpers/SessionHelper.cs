@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Text;
 
-namespace Gromi.Infra.Utils.Helpers
+namespace Gromi.Infra.Utils.Utils
 {
     /// <summary>
     /// 会话帮助类

@@ -1,12 +1,12 @@
 ﻿using System.Net.Mail;
 using System.Text.RegularExpressions;
 
-namespace Gromi.Infra.Utils.Helpers
+namespace Gromi.Infra.Utils.Utils
 {
     /// <summary>
-    /// 校验帮助类
+    /// 校验工具
     /// </summary>
-    public static class VerifyHelper
+    public static class VerifyUtil
     {
         /// <summary>
         /// 身份证号格式校验

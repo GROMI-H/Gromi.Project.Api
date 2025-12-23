@@ -1,4 +1,4 @@
-﻿using Gromi.Infra.Utils.Helpers;
+﻿using Gromi.Infra.Utils.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
@@ -41,7 +41,7 @@ namespace Gromi.CraftHub.Api.Filters
                     {
                         context.HttpContext.Request.Body.Position = 0;
                         var body = await reader.ReadToEndAsync();
-                        var decryptedBody = EncryptHelper.DecryptAes(body, AES_KEY);
+                        var decryptedBody = EncryptUtil.DecryptAes(body, AES_KEY);
                         context.HttpContext.Request.Body.Position = 0;
                         var bytes = Encoding.UTF8.GetBytes(decryptedBody);
                         context.HttpContext.Request.Body = new MemoryStream(bytes);
@@ -55,7 +55,7 @@ namespace Gromi.CraftHub.Api.Filters
                     if (objectResult.Value != null)
                     {
                         var jsonResult = JsonConvert.SerializeObject(objectResult.Value);
-                        var encryptedResult = EncryptHelper.EncryptAes(jsonResult, AES_KEY);
+                        var encryptedResult = EncryptUtil.EncryptAes(jsonResult, AES_KEY);
                         objectResult.Value = encryptedResult;
                     }
                 }

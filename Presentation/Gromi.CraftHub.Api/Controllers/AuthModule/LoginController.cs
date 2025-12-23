@@ -3,6 +3,7 @@ using Gromi.CraftHub.Api.Filters;
 using Gromi.Infra.Entity.Common.AuthModule.Dtos;
 using Gromi.Infra.Entity.Common.AuthModule.Params;
 using Gromi.Infra.Entity.Common.BaseModule.Dtos;
+using Gromi.Infra.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
@@ -36,7 +37,9 @@ namespace Gromi.CraftHub.Api.Controllers.AuthModule
         [Description("获取验证码图片")]
         public async Task<IActionResult> Captcha()
         {
-            BaseResult<string> res = await _loginService.GetCaptcha();
+            BaseResult<string> res = new BaseResult<string>();
+            //BaseResult<string> res = await _loginService.GetCaptcha();
+            EmailHelper.SendEmail();
             return Ok(res);
         }
 

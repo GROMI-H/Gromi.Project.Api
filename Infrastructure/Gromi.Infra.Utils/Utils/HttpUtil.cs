@@ -1,11 +1,11 @@
 ﻿using System.Text;
 
-namespace Gromi.Infra.Utils.Helpers
+namespace Gromi.Infra.Utils.Utils
 {
     /// <summary>
-    /// Http请求帮助类
+    /// Http请求工具
     /// </summary>
-    public static class HttpHelper
+    public static class HttpUtil
     {
         private static readonly HttpClient _httpClient = new HttpClient()
         {

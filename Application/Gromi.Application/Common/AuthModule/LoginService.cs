@@ -9,6 +9,7 @@ using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
 using Gromi.Infra.Entity.Common.SystemModule.Params;
 using Gromi.Infra.Utils.Helpers;
+using Gromi.Infra.Utils.Utils;
 using Gromi.Repository.Common.SystemModule;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,8 +72,8 @@ namespace Gromi.Application.Common.AuthModule
                     return result;
                 }
                 // 密码加盐
-                string salt = EncryptHelper.Md5(GeneratorHelper.GenerateRandomString(5));
-                param.Password = EncryptHelper.Md5(param.Password + salt);
+                string salt = EncryptUtil.Md5(GeneratorUtil.GenerateRandomString(5));
+                param.Password = EncryptUtil.Md5(param.Password + salt);
 
                 var userInfo = param.Adapt<UserInfo>();
                 userInfo.Salt = salt;
@@ -105,7 +106,7 @@ namespace Gromi.Application.Common.AuthModule
             {
                 BaseResult<string> result = new BaseResult<string>();
 
-                var captchaData = CaptchaHelper.GenerateCaptcha();
+                var captchaData = CaptchaUtil.GenerateCaptcha();
                 SessionHelper.SetSession(CommonConstant.CaptchaKey, captchaData.Code);
                 SessionHelper.SetSession(CommonConstant.CaptchaExpireKey, DateTime.UtcNow.AddMinutes(1).ToString("o"));
                 result.Code = ResponseCodeEnum.Success;
@@ -155,7 +156,7 @@ namespace Gromi.Application.Common.AuthModule
                         result.Message = "未查询到用户信息";
                         return result;
                     }
-                    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptHelper.Md5(loginParam.Password + userInfo.Salt));
+                    verifyRes = await _userRepository.VerifyPassword(loginParam.Account, EncryptUtil.Md5(loginParam.Password + userInfo.Salt));
                 }
                 else
                 {

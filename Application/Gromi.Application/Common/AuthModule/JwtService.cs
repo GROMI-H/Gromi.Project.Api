@@ -4,6 +4,7 @@ using Gromi.Infra.Entity.Common.BaseModule.Dtos;
 using Gromi.Infra.Entity.Common.BaseModule.Enums;
 using Gromi.Infra.Entity.CraftHub.AuthModule.Dtos;
 using Gromi.Infra.Utils.Helpers;
+using Gromi.Infra.Utils.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -98,8 +99,8 @@ namespace Gromi.Application.Common.AuthModule
                 {
                     UserId = 1,
                     Token = tokenHandler.WriteToken(token),
-                    AuthTime = TimeHelper.GetTimestamp(authTime),
-                    ExpireTime = TimeHelper.GetTimestamp(expireAt),
+                    AuthTime = TimeUtil.GetTimestamp(authTime),
+                    ExpireTime = TimeUtil.GetTimestamp(expireAt),
                     Success = true
                 };
 

@@ -1,12 +1,12 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Gromi.Infra.Utils.Helpers
+namespace Gromi.Infra.Utils.Utils
 {
     /// <summary>
-    /// 加/解密帮助类
+    /// 加/解密工具
     /// </summary>
-    public static class EncryptHelper
+    public static class EncryptUtil
     {
         #region AES
 
